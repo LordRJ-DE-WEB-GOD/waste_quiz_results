@@ -1,199 +1,898 @@
-<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Waste Management on Campus | Group Yellow</title><link rel="stylesheet" href="styles.css"><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script></head><body>
-<header><b>♻ GROUP YELLOW</b><a href="admin.html">Admin</a></header><main><section class="hero"><span>SURVEY</span><h1>Waste Management on Campus</h1><p>Please answer all questions honestly. Your response will be stored securely for survey analysis.</p></section>
-<form id="surveyForm">
-<section class="card"><h2>General Questions</h2>
-<div class="question"><h3>1. How would you rate the current waste management on campus?</h3>
-<div class="options">
-<label><input type="radio" name="q1" value="Very poor"> Very poor</label>
-<label><input type="radio" name="q1" value="Poor"> Poor</label>
-<label><input type="radio" name="q1" value="Average"> Average</label>
-<label><input type="radio" name="q1" value="Good"> Good</label>
-<label><input type="radio" name="q1" value="Very good"> Very good</label>
-</div>
-</div>
-<div class="question"><h3>2. Do you think there are enough dustbins on campus?</h3>
-<div class="options">
-<label><input type="radio" name="q2" value="Yes"> Yes</label>
-<label><input type="radio" name="q2" value="No"> No</label>
-<label><input type="radio" name="q2" value="Not sure"> Not sure</label>
-</div>
-</div>
-<div class="question"><h3>3. Are the dustbins placed in convenient locations?</h3>
-<div class="options">
-<label><input type="radio" name="q3" value="Very convenient"> Very convenient</label>
-<label><input type="radio" name="q3" value="Convenient"> Convenient</label>
-<label><input type="radio" name="q3" value="Neutral"> Neutral</label>
-<label><input type="radio" name="q3" value="Inconvenient"> Inconvenient</label>
-<label><input type="radio" name="q3" value="Very inconvenient"> Very inconvenient</label>
-</div>
-</div>
-<div class="question"><h3>4. How often do you see litter around campus?</h3>
-<div class="options">
-<label><input type="radio" name="q4" value="Never"> Never</label>
-<label><input type="radio" name="q4" value="Rarely"> Rarely</label>
-<label><input type="radio" name="q4" value="Sometimes"> Sometimes</label>
-<label><input type="radio" name="q4" value="Often"> Often</label>
-<label><input type="radio" name="q4" value="Very often"> Very often</label>
-</div>
-</div>
-<div class="question"><h3>5. What types of waste do you commonly see on campus?</h3>
-<small>Select all that apply.</small>
-<div class="options">
-<label><input type="checkbox" name="q5" value="Paper"> Paper</label>
-<label><input type="checkbox" name="q5" value="Plastic"> Plastic</label>
-<label><input type="checkbox" name="q5" value="Food waste"> Food waste</label>
-<label><input type="checkbox" name="q5" value="Bottles"> Bottles</label>
-<label><input type="checkbox" name="q5" value="Cans"> Cans</label>
-<label><input type="checkbox" name="q5" value="Food packaging/wrappers"> Food packaging/wrappers</label>
-</div>
-<input name="q5_other" placeholder="Other (optional)">
-</div>
-<div class="question"><h3>6. Which areas of campus have the most waste or litter?</h3>
-<div class="options">
-<label><input type="radio" name="q6" value="Lecture/classroom areas"> Lecture/classroom areas</label>
-<label><input type="radio" name="q6" value="Cafeteria/food areas"> Cafeteria/food areas</label>
-<label><input type="radio" name="q6" value="Walkways"> Walkways</label>
-<label><input type="radio" name="q6" value="Parking areas"> Parking areas</label>
-<label><input type="radio" name="q6" value="Student/common areas"> Student/common areas</label>
-<label><input type="radio" name="q6" value="Not sure"> Not sure</label>
-</div>
-<input name="q6_other" placeholder="Other (optional)">
-</div>
-<div class="question"><h3>7. Do you think the campus is cleaned regularly?</h3>
-<div class="options">
-<label><input type="radio" name="q7" value="Always"> Always</label>
-<label><input type="radio" name="q7" value="Often"> Often</label>
-<label><input type="radio" name="q7" value="Sometimes"> Sometimes</label>
-<label><input type="radio" name="q7" value="Rarely"> Rarely</label>
-<label><input type="radio" name="q7" value="Never"> Never</label>
-<label><input type="radio" name="q7" value="Not sure"> Not sure</label>
-</div>
-</div>
-<div class="question"><h3>8. Are the dustbins emptied frequently enough?</h3>
-<div class="options">
-<label><input type="radio" name="q8" value="Always"> Always</label>
-<label><input type="radio" name="q8" value="Often"> Often</label>
-<label><input type="radio" name="q8" value="Sometimes"> Sometimes</label>
-<label><input type="radio" name="q8" value="Rarely"> Rarely</label>
-<label><input type="radio" name="q8" value="Never"> Never</label>
-<label><input type="radio" name="q8" value="Not sure"> Not sure</label>
-</div>
-</div>
-</section>
-<section class="card"><h2>Recycling and Separation</h2>
-<div class="question"><h3>9. Are there separate bins for different types of waste?</h3>
-<div class="options">
-<label><input type="radio" name="q9" value="Yes"> Yes</label>
-<label><input type="radio" name="q9" value="No"> No</label>
-<label><input type="radio" name="q9" value="Some areas have them"> Some areas have them</label>
-<label><input type="radio" name="q9" value="Not sure"> Not sure</label>
-</div>
-</div>
-<div class="question"><h3>10. Do you know how to separate recyclable waste from general waste?</h3>
-<div class="options">
-<label><input type="radio" name="q10" value="Yes, I know how"> Yes, I know how</label>
-<label><input type="radio" name="q10" value="I know a little"> I know a little</label>
-<label><input type="radio" name="q10" value="No, I do not know"> No, I do not know</label>
-<label><input type="radio" name="q10" value="Not sure"> Not sure</label>
-</div>
-</div>
-<div class="question"><h3>11. Do you think students and staff make proper use of recycling bins?</h3>
-<div class="options">
-<label><input type="radio" name="q11" value="Always"> Always</label>
-<label><input type="radio" name="q11" value="Often"> Often</label>
-<label><input type="radio" name="q11" value="Sometimes"> Sometimes</label>
-<label><input type="radio" name="q11" value="Rarely"> Rarely</label>
-<label><input type="radio" name="q11" value="Never"> Never</label>
-<label><input type="radio" name="q11" value="Not sure"> Not sure</label>
-</div>
-</div>
-<div class="question"><h3>12. What prevents people from recycling on campus?</h3>
-<small>Select all that apply.</small>
-<div class="options">
-<label><input type="checkbox" name="q12" value="Not enough recycling bins"> Not enough recycling bins</label>
-<label><input type="checkbox" name="q12" value="Recycling bins are difficult to find"> Recycling bins are difficult to find</label>
-<label><input type="checkbox" name="q12" value="Lack of knowledge about recycling"> Lack of knowledge about recycling</label>
-<label><input type="checkbox" name="q12" value="Lack of interest"> Lack of interest</label>
-<label><input type="checkbox" name="q12" value="Recycling bins are not clearly labelled"> Recycling bins are not clearly labelled</label>
-<label><input type="checkbox" name="q12" value="People are not encouraged to recycle"> People are not encouraged to recycle</label>
-<label><input type="checkbox" name="q12" value="Nothing prevents recycling"> Nothing prevents recycling</label>
-</div>
-<input name="q12_other" placeholder="Other (optional)">
-</div>
-<div class="question"><h3>13. Would you be willing to separate your waste if more recycling bins were provided?</h3>
-<div class="options">
-<label><input type="radio" name="q13" value="Definitely yes"> Definitely yes</label>
-<label><input type="radio" name="q13" value="Probably yes"> Probably yes</label>
-<label><input type="radio" name="q13" value="Not sure"> Not sure</label>
-<label><input type="radio" name="q13" value="Probably no"> Probably no</label>
-<label><input type="radio" name="q13" value="Definitely no"> Definitely no</label>
-</div>
-</div>
-</section>
-<section class="card"><h2>Behaviour and Awareness</h2>
-<div class="question"><h3>14. Do you think students are aware of proper waste-disposal practices?</h3>
-<div class="options">
-<label><input type="radio" name="q14" value="Very aware"> Very aware</label>
-<label><input type="radio" name="q14" value="Aware"> Aware</label>
-<label><input type="radio" name="q14" value="Somewhat aware"> Somewhat aware</label>
-<label><input type="radio" name="q14" value="Not very aware"> Not very aware</label>
-<label><input type="radio" name="q14" value="Not aware at all"> Not aware at all</label>
-</div>
-</div>
-<div class="question"><h3>15. Do you think lecturers and staff set a good example when disposing of waste?</h3>
-<div class="options">
-<label><input type="radio" name="q15" value="Always"> Always</label>
-<label><input type="radio" name="q15" value="Often"> Often</label>
-<label><input type="radio" name="q15" value="Sometimes"> Sometimes</label>
-<label><input type="radio" name="q15" value="Rarely"> Rarely</label>
-<label><input type="radio" name="q15" value="Never"> Never</label>
-<label><input type="radio" name="q15" value="Not sure"> Not sure</label>
-</div>
-</div>
-<div class="question"><h3>16. What do you think are the main causes of littering on campus?</h3>
-<small>Select all that apply.</small>
-<div class="options">
-<label><input type="checkbox" name="q16" value="Lack of enough dustbins"> Lack of enough dustbins</label>
-<label><input type="checkbox" name="q16" value="Dustbins are not conveniently located"> Dustbins are not conveniently located</label>
-<label><input type="checkbox" name="q16" value="People do not dispose of waste properly"> People do not dispose of waste properly</label>
-<label><input type="checkbox" name="q16" value="Lack of awareness"> Lack of awareness</label>
-<label><input type="checkbox" name="q16" value="Dustbins are often full"> Dustbins are often full</label>
-<label><input type="checkbox" name="q16" value="Lack of regular cleaning"> Lack of regular cleaning</label>
-</div>
-<input name="q16_other" placeholder="Other (optional)">
-</div>
-<div class="question"><h3>17. Do you think people litter because there are not enough bins?</h3>
-<div class="options">
-<label><input type="radio" name="q17" value="Yes"> Yes</label>
-<label><input type="radio" name="q17" value="No"> No</label>
-<label><input type="radio" name="q17" value="Sometimes"> Sometimes</label>
-<label><input type="radio" name="q17" value="Not sure"> Not sure</label>
-</div>
-</div>
-<div class="question"><h3>18. Should the university provide more education about waste management?</h3>
-<div class="options">
-<label><input type="radio" name="q18" value="Strongly agree"> Strongly agree</label>
-<label><input type="radio" name="q18" value="Agree"> Agree</label>
-<label><input type="radio" name="q18" value="Neutral"> Neutral</label>
-<label><input type="radio" name="q18" value="Disagree"> Disagree</label>
-<label><input type="radio" name="q18" value="Strongly disagree"> Strongly disagree</label>
-</div>
-</div>
-<div class="question"><h3>19. How satisfied are you with the cleanliness of the campus?</h3>
-<div class="options">
-<label><input type="radio" name="q19" value="Very dissatisfied"> Very dissatisfied</label>
-<label><input type="radio" name="q19" value="Dissatisfied"> Dissatisfied</label>
-<label><input type="radio" name="q19" value="Neutral"> Neutral</label>
-<label><input type="radio" name="q19" value="Satisfied"> Satisfied</label>
-<label><input type="radio" name="q19" value="Very satisfied"> Very satisfied</label>
-</div>
-</div>
-<div class="question"><h3>20. Do you think there are enough waste bins across campus?</h3>
-<div class="options">
-<label><input type="radio" name="q20" value="Yes"> Yes</label>
-<label><input type="radio" name="q20" value="No"> No</label>
-<label><input type="radio" name="q20" value="Not sure"> Not sure</label>
-</div>
-</div>
-</section>
-<section class="card submit"><button type="submit">Submit Survey</button><p id="status"></p></section></form><section id="success" class="card success hidden"><h2>✓ Thank you!</h2><p>Your response has been submitted successfully.</p><button onclick="location.reload()">Submit another response</button></section></main><script src="config.js"></script><script src="app.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Waste Management on Campus</title>
+
+    <link rel="stylesheet" href="styles.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <script src="app.js" defer></script>
+</head>
+
+<body>
+
+<header class="header">
+    <div class="header-content">
+        <div>
+            <h1>Waste Management on Campus</h1>
+            <p>Group Yellow Survey</p>
+        </div>
+
+        <a href="admin.html" class="admin-link">
+            Admin
+        </a>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="intro-card">
+        <h2>Campus Waste Management Survey</h2>
+
+        <p>
+            Please complete this survey honestly. Your responses will help
+            us understand waste management, recycling and cleanliness
+            on campus.
+        </p>
+
+        <p class="required-note">
+            <strong>*</strong> Required field
+        </p>
+    </section>
+
+    <form id="surveyForm">
+
+        <!-- NAME -->
+
+        <section class="survey-section">
+
+            <h2>Participant Information</h2>
+
+            <div class="question">
+                <label for="fullName">
+                    Full Name <span class="required">*</span>
+                </label>
+
+                <input
+                    type="text"
+                    id="fullName"
+                    name="fullName"
+                    placeholder="Enter your full name"
+                    required
+                    minlength="2"
+                >
+            </div>
+
+        </section>
+
+
+        <!-- GENERAL QUESTIONS -->
+
+        <section class="survey-section">
+
+            <div class="section-title">
+                <span>01</span>
+                <div>
+                    <h2>General Questions</h2>
+                    <p>Questions about waste management on campus.</p>
+                </div>
+            </div>
+
+
+            <!-- Q1 -->
+
+            <div class="question">
+                <h3>
+                    1. How would you rate the current waste management on campus?
+                </h3>
+
+                <label>
+                    <input type="radio" name="q1" value="Very poor" required>
+                    Very poor
+                </label>
+
+                <label>
+                    <input type="radio" name="q1" value="Poor">
+                    Poor
+                </label>
+
+                <label>
+                    <input type="radio" name="q1" value="Average">
+                    Average
+                </label>
+
+                <label>
+                    <input type="radio" name="q1" value="Good">
+                    Good
+                </label>
+
+                <label>
+                    <input type="radio" name="q1" value="Very good">
+                    Very good
+                </label>
+            </div>
+
+
+            <!-- Q2 -->
+
+            <div class="question">
+                <h3>
+                    2. Do you think there are enough dustbins on campus?
+                </h3>
+
+                <label>
+                    <input type="radio" name="q2" value="Yes" required>
+                    Yes
+                </label>
+
+                <label>
+                    <input type="radio" name="q2" value="No">
+                    No
+                </label>
+
+                <label>
+                    <input type="radio" name="q2" value="Not sure">
+                    Not sure
+                </label>
+            </div>
+
+
+            <!-- Q3 -->
+
+            <div class="question">
+                <h3>
+                    3. Are the dustbins placed in convenient locations?
+                </h3>
+
+                <label>
+                    <input type="radio" name="q3" value="Very convenient" required>
+                    Very convenient
+                </label>
+
+                <label>
+                    <input type="radio" name="q3" value="Convenient">
+                    Convenient
+                </label>
+
+                <label>
+                    <input type="radio" name="q3" value="Neutral">
+                    Neutral
+                </label>
+
+                <label>
+                    <input type="radio" name="q3" value="Inconvenient">
+                    Inconvenient
+                </label>
+
+                <label>
+                    <input type="radio" name="q3" value="Very inconvenient">
+                    Very inconvenient
+                </label>
+            </div>
+
+
+            <!-- Q4 -->
+
+            <div class="question">
+                <h3>
+                    4. How often do you see litter around campus?
+                </h3>
+
+                <label>
+                    <input type="radio" name="q4" value="Never" required>
+                    Never
+                </label>
+
+                <label>
+                    <input type="radio" name="q4" value="Rarely">
+                    Rarely
+                </label>
+
+                <label>
+                    <input type="radio" name="q4" value="Sometimes">
+                    Sometimes
+                </label>
+
+                <label>
+                    <input type="radio" name="q4" value="Often">
+                    Often
+                </label>
+
+                <label>
+                    <input type="radio" name="q4" value="Very often">
+                    Very often
+                </label>
+            </div>
+
+
+            <!-- Q5 -->
+
+            <div class="question">
+                <h3>
+                    5. What types of waste do you commonly see on campus?
+                </h3>
+
+                <p class="hint">Select all that apply.</p>
+
+                <label>
+                    <input type="checkbox" name="q5" value="Paper">
+                    Paper
+                </label>
+
+                <label>
+                    <input type="checkbox" name="q5" value="Plastic">
+                    Plastic
+                </label>
+
+                <label>
+                    <input type="checkbox" name="q5" value="Food waste">
+                    Food waste
+                </label>
+
+                <label>
+                    <input type="checkbox" name="q5" value="Bottles">
+                    Bottles
+                </label>
+
+                <label>
+                    <input type="checkbox" name="q5" value="Cans">
+                    Cans
+                </label>
+
+                <label>
+                    <input type="checkbox" name="q5" value="Food packaging/wrappers">
+                    Food packaging/wrappers
+                </label>
+
+                <label>
+                    <input type="checkbox" name="q5" value="Other">
+                    Other
+                </label>
+
+                <input
+                    type="text"
+                    id="q5_other"
+                    placeholder="If Other, please specify"
+                >
+            </div>
+
+
+            <!-- Q6 -->
+
+            <div class="question">
+                <h3>
+                    6. Which areas of campus have the most waste or litter?
+                </h3>
+
+                <label>
+                    <input type="radio" name="q6" value="Lecture/classroom areas" required>
+                    Lecture/classroom areas
+                </label>
+
+                <label>
+                    <input type="radio" name="q6" value="Cafeteria/food areas">
+                    Cafeteria/food areas
+                </label>
+
+                <label>
+                    <input type="radio" name="q6" value="Walkways">
+                    Walkways
+                </label>
+
+                <label>
+                    <input type="radio" name="q6" value="Parking areas">
+                    Parking areas
+                </label>
+
+                <label>
+                    <input type="radio" name="q6" value="Student/common areas">
+                    Student/common areas
+                </label>
+
+                <label>
+                    <input type="radio" name="q6" value="Other">
+                    Other
+                </label>
+
+                <label>
+                    <input type="radio" name="q6" value="Not sure">
+                    Not sure
+                </label>
+
+                <input
+                    type="text"
+                    id="q6_other"
+                    placeholder="If Other, please specify"
+                >
+            </div>
+
+
+            <!-- Q7 -->
+
+            <div class="question">
+                <h3>
+                    7. Do you think the campus is cleaned regularly?
+                </h3>
+
+                <label>
+                    <input type="radio" name="q7" value="Always" required>
+                    Always
+                </label>
+
+                <label>
+                    <input type="radio" name="q7" value="Often">
+                    Often
+                </label>
+
+                <label>
+                    <input type="radio" name="q7" value="Sometimes">
+                    Sometimes
+                </label>
+
+                <label>
+                    <input type="radio" name="q7" value="Rarely">
+                    Rarely
+                </label>
+
+                <label>
+                    <input type="radio" name="q7" value="Never">
+                    Never
+                </label>
+
+                <label>
+                    <input type="radio" name="q7" value="Not sure">
+                    Not sure
+                </label>
+            </div>
+
+
+            <!-- Q8 -->
+
+            <div class="question">
+                <h3>
+                    8. Are the dustbins emptied frequently enough?
+                </h3>
+
+                <label>
+                    <input type="radio" name="q8" value="Always" required>
+                    Always
+                </label>
+
+                <label>
+                    <input type="radio" name="q8" value="Often">
+                    Often
+                </label>
+
+                <label>
+                    <input type="radio" name="q8" value="Sometimes">
+                    Sometimes
+                </label>
+
+                <label>
+                    <input type="radio" name="q8" value="Rarely">
+                    Rarely
+                </label>
+
+                <label>
+                    <input type="radio" name="q8" value="Never">
+                    Never
+                </label>
+
+                <label>
+                    <input type="radio" name="q8" value="Not sure">
+                    Not sure
+                </label>
+            </div>
+
+        </section>
+
+
+        <!-- RECYCLING -->
+
+        <section class="survey-section">
+
+            <div class="section-title">
+                <span>02</span>
+
+                <div>
+                    <h2>Recycling and Separation</h2>
+                    <p>Questions about recycling practices.</p>
+                </div>
+            </div>
+
+
+            <!-- Q9 -->
+
+            <div class="question">
+                <h3>
+                    9. Are there separate bins for different types of waste?
+                </h3>
+
+                <label>
+                    <input type="radio" name="q9" value="Yes" required>
+                    Yes
+                </label>
+
+                <label>
+                    <input type="radio" name="q9" value="No">
+                    No
+                </label>
+
+                <label>
+                    <input type="radio" name="q9" value="Some areas have them">
+                    Some areas have them
+                </label>
+
+                <label>
+                    <input type="radio" name="q9" value="Not sure">
+                    Not sure
+                </label>
+            </div>
+
+
+            <!-- Q10 -->
+
+            <div class="question">
+                <h3>
+                    10. Do you know how to separate recyclable waste from general waste?
+                </h3>
+
+                <label>
+                    <input type="radio" name="q10" value="Yes, I know how" required>
+                    Yes, I know how
+                </label>
+
+                <label>
+                    <input type="radio" name="q10" value="I know a little">
+                    I know a little
+                </label>
+
+                <label>
+                    <input type="radio" name="q10" value="No, I do not know">
+                    No, I do not know
+                </label>
+
+                <label>
+                    <input type="radio" name="q10" value="Not sure">
+                    Not sure
+                </label>
+            </div>
+
+
+            <!-- Q11 -->
+
+            <div class="question">
+                <h3>
+                    11. Do you think students and staff make proper use of recycling bins?
+                </h3>
+
+                <label>
+                    <input type="radio" name="q11" value="Always" required>
+                    Always
+                </label>
+
+                <label>
+                    <input type="radio" name="q11" value="Often">
+                    Often
+                </label>
+
+                <label>
+                    <input type="radio" name="q11" value="Sometimes">
+                    Sometimes
+                </label>
+
+                <label>
+                    <input type="radio" name="q11" value="Rarely">
+                    Rarely
+                </label>
+
+                <label>
+                    <input type="radio" name="q11" value="Never">
+                    Never
+                </label>
+
+                <label>
+                    <input type="radio" name="q11" value="Not sure">
+                    Not sure
+                </label>
+            </div>
+
+
+            <!-- Q12 -->
+
+            <div class="question">
+                <h3>
+                    12. What prevents people from recycling on campus?
+                </h3>
+
+                <p class="hint">Select all that apply.</p>
+
+                <label>
+                    <input type="checkbox" name="q12" value="Not enough recycling bins">
+                    Not enough recycling bins
+                </label>
+
+                <label>
+                    <input type="checkbox" name="q12" value="Recycling bins are difficult to find">
+                    Recycling bins are difficult to find
+                </label>
+
+                <label>
+                    <input type="checkbox" name="q12" value="Lack of knowledge about recycling">
+                    Lack of knowledge about recycling
+                </label>
+
+                <label>
+                    <input type="checkbox" name="q12" value="Lack of interest">
+                    Lack of interest
+                </label>
+
+                <label>
+                    <input type="checkbox" name="q12" value="Recycling bins are not clearly labelled">
+                    Recycling bins are not clearly labelled
+                </label>
+
+                <label>
+                    <input type="checkbox" name="q12" value="People are not encouraged to recycle">
+                    People are not encouraged to recycle
+                </label>
+
+                <label>
+                    <input type="checkbox" name="q12" value="Other">
+                    Other
+                </label>
+
+                <label>
+                    <input type="checkbox" name="q12" value="Nothing prevents recycling">
+                    Nothing prevents recycling
+                </label>
+
+                <input
+                    type="text"
+                    id="q12_other"
+                    placeholder="If Other, please specify"
+                >
+            </div>
+
+
+            <!-- Q13 -->
+
+            <div class="question">
+                <h3>
+                    13. Would you be willing to separate your waste if more recycling bins were provided?
+                </h3>
+
+                <label>
+                    <input type="radio" name="q13" value="Definitely yes" required>
+                    Definitely yes
+                </label>
+
+                <label>
+                    <input type="radio" name="q13" value="Probably yes">
+                    Probably yes
+                </label>
+
+                <label>
+                    <input type="radio" name="q13" value="Not sure">
+                    Not sure
+                </label>
+
+                <label>
+                    <input type="radio" name="q13" value="Probably no">
+                    Probably no
+                </label>
+
+                <label>
+                    <input type="radio" name="q13" value="Definitely no">
+                    Definitely no
+                </label>
+            </div>
+
+        </section>
+
+
+        <!-- BEHAVIOUR -->
+
+        <section class="survey-section">
+
+            <div class="section-title">
+                <span>03</span>
+
+                <div>
+                    <h2>Behaviour and Awareness</h2>
+                    <p>Questions about behaviour and awareness.</p>
+                </div>
+            </div>
+
+
+            <!-- Q14 -->
+
+            <div class="question">
+                <h3>
+                    14. Do you think students are aware of proper waste-disposal practices?
+                </h3>
+
+                <label>
+                    <input type="radio" name="q14" value="Very aware" required>
+                    Very aware
+                </label>
+
+                <label>
+                    <input type="radio" name="q14" value="Aware">
+                    Aware
+                </label>
+
+                <label>
+                    <input type="radio" name="q14" value="Somewhat aware">
+                    Somewhat aware
+                </label>
+
+                <label>
+                    <input type="radio" name="q14" value="Not very aware">
+                    Not very aware
+                </label>
+
+                <label>
+                    <input type="radio" name="q14" value="Not aware at all">
+                    Not aware at all
+                </label>
+            </div>
+
+
+            <!-- Q15 -->
+
+            <div class="question">
+                <h3>
+                    15. Do you think lecturers and staff set a good example when disposing of waste?
+                </h3>
+
+                <label>
+                    <input type="radio" name="q15" value="Always" required>
+                    Always
+                </label>
+
+                <label>
+                    <input type="radio" name="q15" value="Often">
+                    Often
+                </label>
+
+                <label>
+                    <input type="radio" name="q15" value="Sometimes">
+                    Sometimes
+                </label>
+
+                <label>
+                    <input type="radio" name="q15" value="Rarely">
+                    Rarely
+                </label>
+
+                <label>
+                    <input type="radio" name="q15" value="Never">
+                    Never
+                </label>
+
+                <label>
+                    <input type="radio" name="q15" value="Not sure">
+                    Not sure
+                </label>
+            </div>
+
+
+            <!-- Q16 -->
+
+            <div class="question">
+                <h3>
+                    16. What do you think are the main causes of littering on campus?
+                </h3>
+
+                <p class="hint">Select all that apply.</p>
+
+                <label>
+                    <input type="checkbox" name="q16" value="Lack of enough dustbins">
+                    Lack of enough dustbins
+                </label>
+
+                <label>
+                    <input type="checkbox" name="q16" value="Dustbins are not conveniently located">
+                    Dustbins are not conveniently located
+                </label>
+
+                <label>
+                    <input type="checkbox" name="q16" value="People do not dispose of waste properly">
+                    People do not dispose of waste properly
+                </label>
+
+                <label>
+                    <input type="checkbox" name="q16" value="Lack of awareness">
+                    Lack of awareness
+                </label>
+
+                <label>
+                    <input type="checkbox" name="q16" value="Dustbins are often full">
+                    Dustbins are often full
+                </label>
+
+                <label>
+                    <input type="checkbox" name="q16" value="Lack of regular cleaning">
+                    Lack of regular cleaning
+                </label>
+
+                <label>
+                    <input type="checkbox" name="q16" value="Other">
+                    Other
+                </label>
+
+                <input
+                    type="text"
+                    id="q16_other"
+                    placeholder="If Other, please specify"
+                >
+            </div>
+
+
+            <!-- Q17 -->
+
+            <div class="question">
+                <h3>
+                    17. Do you think people litter because there are not enough bins?
+                </h3>
+
+                <label>
+                    <input type="radio" name="q17" value="Yes" required>
+                    Yes
+                </label>
+
+                <label>
+                    <input type="radio" name="q17" value="No">
+                    No
+                </label>
+
+                <label>
+                    <input type="radio" name="q17" value="Sometimes">
+                    Sometimes
+                </label>
+
+                <label>
+                    <input type="radio" name="q17" value="Not sure">
+                    Not sure
+                </label>
+            </div>
+
+
+            <!-- Q18 -->
+
+            <div class="question">
+                <h3>
+                    18. Should the university provide more education about waste management?
+                </h3>
+
+                <label>
+                    <input type="radio" name="q18" value="Strongly agree" required>
+                    Strongly agree
+                </label>
+
+                <label>
+                    <input type="radio" name="q18" value="Agree">
+                    Agree
+                </label>
+
+                <label>
+                    <input type="radio" name="q18" value="Neutral">
+                    Neutral
+                </label>
+
+                <label>
+                    <input type="radio" name="q18" value="Disagree">
+                    Disagree
+                </label>
+
+                <label>
+                    <input type="radio" name="q18" value="Strongly disagree">
+                    Strongly disagree
+                </label>
+            </div>
+
+
+            <!-- Q19 -->
+
+            <div class="question">
+                <h3>
+                    19. How satisfied are you with the cleanliness of the campus?
+                </h3>
+
+                <label>
+                    <input type="radio" name="q19" value="Very dissatisfied" required>
+                    Very dissatisfied
+                </label>
+
+                <label>
+                    <input type="radio" name="q19" value="Dissatisfied">
+                    Dissatisfied
+                </label>
+
+                <label>
+                    <input type="radio" name="q19" value="Neutral">
+                    Neutral
+                </label>
+
+                <label>
+                    <input type="radio" name="q19" value="Satisfied">
+                    Satisfied
+                </label>
+
+                <label>
+                    <input type="radio" name="q19" value="Very satisfied">
+                    Very satisfied
+                </label>
+            </div>
+
+
+            <!-- Q20 -->
+
+            <div class="question">
+                <h3>
+                    20. Do you think there are enough waste bins across campus?
+                </h3>
+
+                <label>
+                    <input type="radio" name="q20" value="Yes" required>
+                    Yes
+                </label>
+
+                <label>
+                    <input type="radio" name="q20" value="No">
+                    No
+                </label>
+
+                <label>
+                    <input type="radio" name="q20" value="Not sure">
+                    Not sure
+                </label>
+            </div>
+
+        </section>
+
+
+        <div class="submit-area">
+
+            <button type="submit" id="submitButton">
+                Submit Survey
+            </button>
+
+            <p id="statusMessage"></p>
+
+        </div>
+
+    </form>
+
+
+    <section id="successMessage" class="success-card hidden">
+
+        <div class="success-icon">
+            ✓
+        </div>
+
+        <h2>Thank You!</h2>
+
+        <p>
+            Your survey response has been successfully submitted.
+        </p>
+
+        <button onclick="location.reload()">
+            Submit Another Response
+        </button>
+
+    </section>
+
+</main>
+
+<footer>
+    <p>Group Yellow • Waste Management on Campus</p>
+</footer>
+
+</body>
+</html>
