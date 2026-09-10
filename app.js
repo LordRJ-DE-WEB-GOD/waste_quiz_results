@@ -1,113 +1,128 @@
-// ============================================
-// WASTE MANAGEMENT ON CAMPUS - app.js
-// ============================================
+// ======================================================
+// WASTE MANAGEMENT ON CAMPUS
+// app.js
+// ======================================================
 
-// Make sure Supabase has been loaded
-if (typeof SUPABASE_URL === "undefined" || typeof SUPABASE_ANON_KEY === "undefined") {
-    console.error("Supabase configuration is missing.");
-    alert("Supabase configuration is missing. Please check config.js.");
-}
-
+// Create Supabase client
 const supabaseClient = window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_ANON_KEY
 );
 
 
-// ============================================
-// FORM ELEMENTS
-// ============================================
+// ======================================================
+// ELEMENTS
+// ======================================================
 
 const surveyForm = document.getElementById("surveyForm");
 const submitButton = document.getElementById("submitButton");
-const message = document.getElementById("message");
+const statusMessage = document.getElementById("statusMessage");
+const successMessage = document.getElementById("successMessage");
 
 
-// ============================================
-// SHOW MESSAGE
-// ============================================
+// ======================================================
+// SHOW STATUS MESSAGE
+// ======================================================
 
-function showMessage(text, type) {
-    if (!message) return;
+function showStatus(message, type = "") {
 
-    message.textContent = text;
-    message.className = "message " + type;
+    if (!statusMessage) {
+        return;
+    }
 
-    message.scrollIntoView({
-        behavior: "smooth",
-        block: "center"
-    });
+    statusMessage.textContent = message;
+
+    statusMessage.className = "";
+
+    if (type !== "") {
+        statusMessage.classList.add(type);
+    }
 }
 
 
-// ============================================
-// GET RADIO VALUE
-// ============================================
+// ======================================================
+// GET RADIO BUTTON VALUE
+// ======================================================
 
-function getRadioValue(name) {
+function getRadioValue(questionName) {
+
     const selected = document.querySelector(
-        `input[name="${name}"]:checked`
+        `input[name="${questionName}"]:checked`
     );
 
-    return selected ? selected.value : null;
+    if (selected) {
+        return selected.value;
+    }
+
+    return null;
 }
 
 
-// ============================================
+// ======================================================
 // GET CHECKBOX VALUES
-// ============================================
+// ======================================================
 
-function getCheckboxValues(name) {
-    const checked = document.querySelectorAll(
-        `input[name="${name}"]:checked`
+function getCheckboxValues(questionName) {
+
+    const selected = document.querySelectorAll(
+        `input[name="${questionName}"]:checked`
     );
 
-    return Array.from(checked).map(item => item.value);
+    return Array.from(selected).map(
+        checkbox => checkbox.value
+    );
 }
 
 
-// ============================================
-// GET OTHER TEXT VALUE
-// ============================================
+// ======================================================
+// GET OTHER TEXT
+// ======================================================
 
-function getOtherValue(id) {
-    const element = document.getElementById(id);
+function getOtherValue(inputId) {
 
-    if (!element) {
+    const input = document.getElementById(inputId);
+
+    if (!input) {
         return null;
     }
 
-    const value = element.value.trim();
+    const value = input.value.trim();
 
     return value === "" ? null : value;
 }
 
 
-// ============================================
+// ======================================================
 // VALIDATE FULL NAME
-// ============================================
+// ======================================================
 
 function validateFullName() {
-    const fullNameElement = document.getElementById("full_name");
 
-    if (!fullNameElement) {
-        showMessage(
-            "Full Name field is missing from the survey.",
+    const fullNameInput =
+        document.getElementById("fullName");
+
+    if (!fullNameInput) {
+
+        showStatus(
+            "Full Name field could not be found.",
             "error"
         );
 
         return false;
     }
 
-    const fullName = fullNameElement.value.trim();
+    const fullName =
+        fullNameInput.value.trim();
+
 
     if (fullName.length < 2) {
-        showMessage(
+
+        showStatus(
             "Please enter your full name.",
             "error"
         );
 
-        fullNameElement.focus();
+        fullNameInput.focus();
 
         return false;
     }
@@ -116,20 +131,13 @@ function validateFullName() {
 }
 
 
-// ============================================
-// CHECK REQUIRED QUESTIONS
-// ============================================
+// ======================================================
+// VALIDATE RADIO QUESTIONS
+// ======================================================
 
-function validateSurvey() {
+function validateRadioQuestions() {
 
-    // Full Name
-    if (!validateFullName()) {
-        return false;
-    }
-
-
-    // Questions that use radio buttons
-    const radioQuestions = [
+    const questions = [
         "q1",
         "q2",
         "q3",
@@ -150,69 +158,122 @@ function validateSurvey() {
     ];
 
 
-    for (const question of radioQuestions) {
+    for (const question of questions) {
 
         const selected = document.querySelector(
             `input[name="${question}"]:checked`
         );
 
+
         if (!selected) {
 
-            showMessage(
-                `Please answer question ${question.substring(1)}.`,
+            const number =
+                question.replace("q", "");
+
+
+            showStatus(
+                `Please answer question ${number}.`,
                 "error"
             );
 
-            const firstOption = document.querySelector(
-                `input[name="${question}"]`
-            );
+
+            const firstOption =
+                document.querySelector(
+                    `input[name="${question}"]`
+                );
+
 
             if (firstOption) {
+
                 firstOption.scrollIntoView({
                     behavior: "smooth",
                     block: "center"
                 });
+
             }
 
             return false;
         }
     }
 
+    return true;
+}
 
-    // Questions using checkboxes
-    const checkboxQuestions = [
+
+// ======================================================
+// VALIDATE CHECKBOX QUESTIONS
+// ======================================================
+
+function validateCheckboxQuestions() {
+
+    const questions = [
         "q5",
         "q12",
         "q16"
     ];
 
 
-    for (const question of checkboxQuestions) {
+    for (const question of questions) {
 
-        const selected = document.querySelectorAll(
-            `input[name="${question}"]:checked`
-        );
+        const selected =
+            document.querySelectorAll(
+                `input[name="${question}"]:checked`
+            );
+
 
         if (selected.length === 0) {
 
-            showMessage(
-                `Please answer question ${question.substring(1)}.`,
+            const number =
+                question.replace("q", "");
+
+
+            showStatus(
+                `Please answer question ${number}.`,
                 "error"
             );
 
-            const firstOption = document.querySelector(
-                `input[name="${question}"]`
-            );
+
+            const firstOption =
+                document.querySelector(
+                    `input[name="${question}"]`
+                );
+
 
             if (firstOption) {
+
                 firstOption.scrollIntoView({
                     behavior: "smooth",
                     block: "center"
                 });
+
             }
 
             return false;
         }
+    }
+
+    return true;
+}
+
+
+// ======================================================
+// COMPLETE VALIDATION
+// ======================================================
+
+function validateSurvey() {
+
+    if (!validateFullName()) {
+        return false;
+    }
+
+
+    if (!validateRadioQuestions()) {
+        return false;
+    }
+
+
+    if (!validateCheckboxQuestions()) {
+        return false;
     }
 
 
@@ -220,78 +281,90 @@ function validateSurvey() {
 }
 
 
-// ============================================
+// ======================================================
 // SUBMIT SURVEY
-// ============================================
+// ======================================================
 
-if (surveyForm) {
-
-    surveyForm.addEventListener("submit", async function (event) {
+surveyForm.addEventListener(
+    "submit",
+    async function (event) {
 
         event.preventDefault();
 
 
-        // Validate
+        // ----------------------------------------------
+        // VALIDATION
+        // ----------------------------------------------
+
         if (!validateSurvey()) {
             return;
         }
 
 
-        // Prevent double submission
-        if (submitButton) {
-            submitButton.disabled = true;
-            submitButton.textContent = "Submitting...";
-        }
+        // ----------------------------------------------
+        // DISABLE BUTTON
+        // ----------------------------------------------
+
+        submitButton.disabled = true;
+
+        submitButton.textContent =
+            "Submitting...";
 
 
-        showMessage(
-            "Submitting your survey...",
+        showStatus(
+            "Submitting your response...",
             "info"
         );
 
 
         try {
 
-            // ========================================
+            // ------------------------------------------
             // FULL NAME
-            // ========================================
+            // ------------------------------------------
 
             const fullName =
-                document.getElementById("full_name").value.trim();
+                document
+                    .getElementById("fullName")
+                    .value
+                    .trim();
 
 
-            // ========================================
+            // ------------------------------------------
             // QUESTION 5
-            // ========================================
+            // ------------------------------------------
 
-            const q5 = getCheckboxValues("q5");
+            const q5 =
+                getCheckboxValues("q5");
 
 
-            // ========================================
+            // ------------------------------------------
             // QUESTION 12
-            // ========================================
+            // ------------------------------------------
 
-            const q12 = getCheckboxValues("q12");
+            const q12 =
+                getCheckboxValues("q12");
 
 
-            // ========================================
+            // ------------------------------------------
             // QUESTION 16
-            // ========================================
+            // ------------------------------------------
 
-            const q16 = getCheckboxValues("q16");
+            const q16 =
+                getCheckboxValues("q16");
 
 
-            // ========================================
-            // CREATE RESPONSE OBJECT
-            // ========================================
+            // ------------------------------------------
+            // RESPONSE DATA
+            // ------------------------------------------
 
             const responseData = {
 
-                // Person's name
                 full_name: fullName,
 
 
-                // General Questions
+                // GENERAL QUESTIONS
+
                 q1: getRadioValue("q1"),
 
                 q2: getRadioValue("q2"),
@@ -313,7 +386,8 @@ if (surveyForm) {
                 q8: getRadioValue("q8"),
 
 
-                // Recycling and Separation
+                // RECYCLING AND SEPARATION
+
                 q9: getRadioValue("q9"),
 
                 q10: getRadioValue("q10"),
@@ -327,7 +401,8 @@ if (surveyForm) {
                 q13: getRadioValue("q13"),
 
 
-                // Behaviour and Awareness
+                // BEHAVIOUR AND AWARENESS
+
                 q14: getRadioValue("q14"),
 
                 q15: getRadioValue("q15"),
@@ -346,25 +421,31 @@ if (surveyForm) {
             };
 
 
+            // ------------------------------------------
+            // DEBUG
+            // ------------------------------------------
+
             console.log(
-                "Submitting response:",
+                "Survey response:",
                 responseData
             );
 
 
-            // ========================================
+            // ------------------------------------------
             // SEND TO SUPABASE
-            // ========================================
+            // ------------------------------------------
 
-            const { data, error } = await supabaseClient
-                .from("waste_management_responses")
-                .insert([responseData])
-                .select();
+            const { data, error } =
+                await supabaseClient
+                    .from(
+                        "waste_management_responses"
+                    )
+                    .insert([responseData]);
 
 
-            // ========================================
-            // HANDLE SUPABASE ERROR
-            // ========================================
+            // ------------------------------------------
+            // CHECK ERROR
+            // ------------------------------------------
 
             if (error) {
 
@@ -377,91 +458,85 @@ if (surveyForm) {
             }
 
 
-            // ========================================
+            // ------------------------------------------
             // SUCCESS
-            // ========================================
+            // ------------------------------------------
 
             console.log(
-                "Survey submitted successfully:",
-                data
+                "Response submitted successfully."
             );
 
 
-            showMessage(
-                "✅ Thank you! Your survey has been submitted successfully.",
+            showStatus(
+                "Survey submitted successfully!",
                 "success"
             );
 
 
-            // Clear form
-            surveyForm.reset();
+            // Hide form
+            surveyForm.style.display = "none";
 
 
-            // Scroll to top
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth"
-            });
+            // Show success card
+            if (successMessage) {
+
+                successMessage.classList.remove(
+                    "hidden"
+                );
+
+            }
+
+
+            // Scroll to success message
+            if (successMessage) {
+
+                successMessage.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center"
+                });
+
+            }
 
 
         } catch (error) {
 
             console.error(
-                "Submission error:",
+                "Error submitting survey:",
                 error
             );
 
 
-            let errorMessage =
-                "Something went wrong while submitting your survey.";
-
-
-            // More useful error messages
-            if (error && error.message) {
-
-                errorMessage =
-                    "Submission failed: " +
-                    error.message;
-            }
-
-
-            showMessage(
-                errorMessage,
+            showStatus(
+                "Unable to submit your survey. Please try again.",
                 "error"
             );
 
 
-        } finally {
-
             // Re-enable button
-            if (submitButton) {
+            submitButton.disabled = false;
 
-                submitButton.disabled = false;
-
-                submitButton.textContent =
-                    "Submit Survey";
-            }
+            submitButton.textContent =
+                "Submit Survey";
         }
 
-    });
+    }
+);
 
-}
 
+// ======================================================
+// OTHER OPTION - QUESTION 5
+// ======================================================
 
-// ============================================
-// OTHER OPTION HANDLING
-// ============================================
-
-// Question 5
-function setupOtherOption(
-    checkboxName,
+function setupCheckboxOther(
+    questionName,
     otherInputId
 ) {
 
     const checkboxes =
         document.querySelectorAll(
-            `input[name="${checkboxName}"]`
+            `input[name="${questionName}"]`
         );
+
 
     const otherInput =
         document.getElementById(otherInputId);
@@ -472,107 +547,134 @@ function setupOtherOption(
     }
 
 
-    checkboxes.forEach(checkbox => {
+    checkboxes.forEach(
+        checkbox => {
 
-        checkbox.addEventListener(
-            "change",
-            function () {
+            checkbox.addEventListener(
+                "change",
+                function () {
 
-                if (
-                    this.value.toLowerCase() === "other" &&
-                    this.checked
-                ) {
+                    if (
+                        this.value === "Other" &&
+                        this.checked
+                    ) {
 
-                    otherInput.style.display =
-                        "block";
+                        otherInput.style.display =
+                            "block";
 
-                    otherInput.focus();
+                        otherInput.focus();
 
-                } else if (
-                    this.value.toLowerCase() === "other" &&
-                    !this.checked
-                ) {
+                    }
 
-                    otherInput.style.display =
-                        "none";
 
-                    otherInput.value = "";
+                    if (
+                        this.value === "Other" &&
+                        !this.checked
+                    ) {
+
+                        otherInput.style.display =
+                            "none";
+
+                        otherInput.value = "";
+                    }
+
                 }
+            );
 
-            }
-        );
-
-    });
+        }
+    );
 
 }
 
 
-// ============================================
-// INITIALISE OTHER FIELDS
-// ============================================
+// ======================================================
+// OTHER OPTION - QUESTION 6
+// ======================================================
+
+function setupRadioOther(
+    questionName,
+    otherInputId
+) {
+
+    const options =
+        document.querySelectorAll(
+            `input[name="${questionName}"]`
+        );
+
+
+    const otherInput =
+        document.getElementById(otherInputId);
+
+
+    if (!otherInput) {
+        return;
+    }
+
+
+    options.forEach(
+        option => {
+
+            option.addEventListener(
+                "change",
+                function () {
+
+                    if (
+                        this.value === "Other" &&
+                        this.checked
+                    ) {
+
+                        otherInput.style.display =
+                            "block";
+
+                        otherInput.focus();
+
+                    } else {
+
+                        otherInput.style.display =
+                            "none";
+
+                        otherInput.value = "";
+                    }
+
+                }
+            );
+
+        }
+    );
+
+}
+
+
+// ======================================================
+// INITIALISE
+// ======================================================
 
 document.addEventListener(
     "DOMContentLoaded",
     function () {
 
-        setupOtherOption(
+        setupCheckboxOther(
             "q5",
             "q5_other"
         );
 
-        setupOtherOption(
+
+        setupCheckboxOther(
             "q12",
             "q12_other"
         );
 
-        setupOtherOption(
+
+        setupCheckboxOther(
             "q16",
             "q16_other"
         );
 
 
-        // Q6 Other
-        const q6Options =
-            document.querySelectorAll(
-                'input[name="q6"]'
-            );
-
-        const q6Other =
-            document.getElementById("q6_other");
-
-
-        if (q6Other) {
-
-            q6Options.forEach(option => {
-
-                option.addEventListener(
-                    "change",
-                    function () {
-
-                        if (
-                            this.value.toLowerCase() === "other"
-                            && this.checked
-                        ) {
-
-                            q6Other.style.display =
-                                "block";
-
-                            q6Other.focus();
-
-                        } else {
-
-                            q6Other.style.display =
-                                "none";
-
-                            q6Other.value = "";
-                        }
-
-                    }
-                );
-
-            });
-
-        }
+        setupRadioOther(
+            "q6",
+            "q6_other"
+        );
 
     }
 );
