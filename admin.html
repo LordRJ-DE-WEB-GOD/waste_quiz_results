@@ -1,1 +1,650 @@
-<!doctype html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin Dashboard</title><link rel="stylesheet" href="styles.css"><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><style>.admin{max-width:1200px;margin:auto;padding:30px 18px}.box{background:white;padding:25px;border:1px solid #e0e8e2;border-radius:18px;margin-bottom:20px}.input{width:100%;padding:12px;border:1px solid #dfe7e1;border-radius:9px;margin:7px 0 12px}.btn{background:#1d6540;color:white;border:0;padding:12px 18px;border-radius:9px;font-weight:700}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.stat{background:#f0f6f2;padding:20px;border-radius:13px}.stat b{font-size:30px;display:block}table{width:100%;border-collapse:collapse;min-width:1200px}th,td{padding:11px;border-bottom:1px solid #e5ebe7;text-align:left;vertical-align:top}th{font-size:12px;text-transform:uppercase}.scroll{overflow:auto}@media(max-width:700px){.stats{grid-template-columns:1fr}}</style></head><body><header><b>♻ GROUP YELLOW ADMIN</b><a href="index.html">Survey</a></header><main class="admin"><div id="login" class="box"><h1>Private Admin Login</h1><input class="input" id="email" type="email" placeholder="Email"><input class="input" id="password" type="password" placeholder="Password"><button class="btn" id="loginBtn">Sign in</button><p id="msg"></p></div><div id="dash" class="hidden"><div class="box"><h1>Waste Management Dashboard</h1><div class="stats"><div class="stat">Responses<b id="total">0</b></div><div class="stat">Q2: Enough bins — Yes<b id="bins">0%</b></div><div class="stat">Q19: Satisfied+<b id="clean">0%</b></div></div></div><div class="box"><input class="input" id="search" placeholder="Search responses"><button class="btn" id="csv">Export CSV</button><div class="scroll"><table><thead><tr><th>Date</th><th>Q1</th><th>Q2</th><th>Q3</th><th>Q4</th><th>Q5</th><th>Q6</th><th>Q7</th><th>Q8</th><th>Q9</th><th>Q10</th><th>Q11</th><th>Q12</th><th>Q13</th><th>Q14</th><th>Q15</th><th>Q16</th><th>Q17</th><th>Q18</th><th>Q19</th><th>Q20</th></tr></thead><tbody id="rows"></tbody></table></div></div></div></main><script src="config.js"></script><script>let data=[];const login=document.getElementById("login"),dash=document.getElementById("dash");async function start(){if((await supabaseClient.auth.getSession()).data.session)show()}function show(){login.classList.add("hidden");dash.classList.remove("hidden");load()}document.getElementById("loginBtn").onclick=async()=>{const r=await supabaseClient.auth.signInWithPassword({email:email.value,password:password.value});if(r.error)msg.textContent=r.error.message;else show()};async function load(){const r=await supabaseClient.from("waste_management_responses").select("*").order("created_at",{ascending:false});if(r.error)return alert(r.error.message);data=r.data||[];render(data)}function render(a){total.textContent=a.length;bins.textContent=a.length?Math.round(a.filter(x=>x.q2==="Yes").length/a.length*100)+"%":"0%";clean.textContent=a.length?Math.round(a.filter(x=>["Satisfied","Very satisfied"].includes(x.q19)).length/a.length*100)+"%":"0%";rows.innerHTML=a.map(x=>"<tr>"+["created_at",...Array.from({length:20},(_,i)=>"q"+(i+1))].map(k=>"<td>"+(Array.isArray(x[k])?x[k].join(", "):(x[k]??"—"))+"</td>").join("")+"</tr>").join("")}search.oninput=()=>{let q=search.value.toLowerCase();render(data.filter(x=>JSON.stringify(x).toLowerCase().includes(q)))};csv.onclick=()=>{if(!data.length)return;let k=Object.keys(data[0]);let e=v=>`"${String(Array.isArray(v)?v.join("; "):v??"").replaceAll('"','""')}"`;let c=[k.join(","),...data.map(r=>k.map(x=>e(r[x])).join(","))].join("\n");let a=document.createElement("a");a.href=URL.createObjectURL(new Blob([c],{type:"text/csv"}));a.download="waste-management-responses.csv";a.click()};start()</script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Waste Management Survey - Admin Dashboard</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <script src="admin.js" defer></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f6f8;
+            color: #222;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* LOGIN */
+
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 430px;
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.1);
+        }
+
+        .login-card h1 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .login-card p {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            background: #222;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .login-btn:hover {
+            background: #444;
+        }
+
+        #loginMessage {
+            margin-top: 15px;
+            text-align: center;
+            color: #c62828;
+        }
+
+        /* DASHBOARD */
+
+        .dashboard {
+            min-height: 100vh;
+        }
+
+        .topbar {
+            background: #171717;
+            color: white;
+            padding: 18px 30px;
+        }
+
+        .topbar-content {
+            max-width: 1400px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .brand h1 {
+            font-size: 22px;
+        }
+
+        .brand p {
+            color: #bbb;
+            font-size: 13px;
+            margin-top: 4px;
+        }
+
+        .logout-btn {
+            padding: 10px 18px;
+            border: 1px solid #777;
+            background: transparent;
+            color: white;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+
+        .logout-btn:hover {
+            background: white;
+            color: #222;
+        }
+
+        .dashboard-container {
+            max-width: 1400px;
+            margin: auto;
+            padding: 30px;
+        }
+
+        /* STAT CARDS */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.07);
+        }
+
+        .stat-card h3 {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .stat-number {
+            font-size: 34px;
+            font-weight: bold;
+        }
+
+        /* TOOLBAR */
+
+        .toolbar {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 7px;
+            font-size: 15px;
+        }
+
+        .toolbar button {
+            padding: 12px 18px;
+            border: none;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .refresh-btn {
+            background: #eee;
+        }
+
+        .export-btn {
+            background: #222;
+            color: white;
+        }
+
+        /* RESPONSES */
+
+        .responses-section {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            overflow: hidden;
+        }
+
+        .responses-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .responses-header h2 {
+            font-size: 20px;
+        }
+
+        .response-count {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 900px;
+        }
+
+        th,
+        td {
+            padding: 14px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+            vertical-align: top;
+        }
+
+        th {
+            background: #f5f5f5;
+            font-size: 13px;
+        }
+
+        td {
+            font-size: 14px;
+        }
+
+        tr:hover td {
+            background: #fafafa;
+        }
+
+        .name-cell {
+            font-weight: bold;
+        }
+
+        .date-cell {
+            white-space: nowrap;
+            color: #666;
+        }
+
+        .answers-btn {
+            padding: 7px 12px;
+            border: none;
+            border-radius: 6px;
+            background: #222;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* MODAL */
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.65);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            width: 100%;
+            max-width: 850px;
+            max-height: 90vh;
+            overflow-y: auto;
+            border-radius: 14px;
+            padding: 30px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            gap: 15px;
+        }
+
+        .close-modal {
+            border: none;
+            background: #eee;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .answer {
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .answer strong {
+            display: block;
+            margin-bottom: 7px;
+        }
+
+        .answer span {
+            color: #555;
+            line-height: 1.5;
+        }
+
+        /* EMPTY */
+
+        .empty {
+            text-align: center;
+            padding: 50px 20px;
+            color: #777;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 800px) {
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard-container {
+                padding: 15px;
+            }
+
+            .topbar {
+                padding: 15px;
+            }
+
+            .topbar-content {
+                align-items: flex-start;
+            }
+
+            .brand h1 {
+                font-size: 18px;
+            }
+
+            .login-card {
+                padding: 25px;
+            }
+
+            .responses-section {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- LOGIN -->
+
+    <section id="loginSection" class="login-container">
+
+        <div class="login-card">
+
+            <h1>Admin Login</h1>
+
+            <p>Waste Management Survey Dashboard</p>
+
+            <form id="loginForm">
+
+                <div class="form-group">
+
+                    <label for="email">Email</label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="Enter admin email"
+                        required
+                    >
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="password">Password</label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Enter password"
+                        required
+                    >
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="login-btn"
+                    id="loginButton"
+                >
+                    Login
+                </button>
+
+                <p id="loginMessage"></p>
+
+            </form>
+
+        </div>
+
+    </section>
+
+
+    <!-- DASHBOARD -->
+
+    <section id="dashboardSection" class="dashboard hidden">
+
+        <header class="topbar">
+
+            <div class="topbar-content">
+
+                <div class="brand">
+
+                    <h1>Waste Management Survey</h1>
+
+                    <p>Administrator Dashboard</p>
+
+                </div>
+
+                <button
+                    id="logoutButton"
+                    class="logout-btn"
+                >
+                    Logout
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <main class="dashboard-container">
+
+            <!-- STATISTICS -->
+
+            <section class="stats">
+
+                <div class="stat-card">
+
+                    <h3>Total Responses</h3>
+
+                    <div
+                        class="stat-number"
+                        id="totalResponses"
+                    >
+                        0
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <h3>Students Who Say There Are Enough Bins</h3>
+
+                    <div
+                        class="stat-number"
+                        id="enoughBinsPercentage"
+                    >
+                        0%
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <h3>Campus Cleanliness Satisfaction</h3>
+
+                    <div
+                        class="stat-number"
+                        id="cleanlinessPercentage"
+                    >
+                        0%
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- SEARCH / TOOLS -->
+
+            <section class="toolbar">
+
+                <input
+                    type="text"
+                    id="searchInput"
+                    class="search-box"
+                    placeholder="Search responses by name..."
+                >
+
+                <button
+                    id="refreshButton"
+                    class="refresh-btn"
+                >
+                    Refresh
+                </button>
+
+                <button
+                    id="exportButton"
+                    class="export-btn"
+                >
+                    Export CSV
+                </button>
+
+            </section>
+
+
+            <!-- RESPONSES -->
+
+            <section class="responses-section">
+
+                <div class="responses-header">
+
+                    <h2>Survey Responses</h2>
+
+                    <span
+                        id="responseCount"
+                        class="response-count"
+                    >
+                        0 responses
+                    </span>
+
+                </div>
+
+
+                <div class="table-wrapper">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>#</th>
+
+                                <th>Full Name</th>
+
+                                <th>Date</th>
+
+                                <th>View Answers</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="responsesTableBody">
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+                <div
+                    id="emptyMessage"
+                    class="empty hidden"
+                >
+                    No survey responses found.
+                </div>
+
+            </section>
+
+        </main>
+
+    </section>
+
+
+    <!-- ANSWERS MODAL -->
+
+    <div
+        id="answersModal"
+        class="modal hidden"
+    >
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <div>
+
+                    <h2 id="modalName">
+                        Survey Response
+                    </h2>
+
+                    <p id="modalDate"></p>
+
+                </div>
+
+                <button
+                    id="closeModal"
+                    class="close-modal"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <div id="answersContainer"></div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>
