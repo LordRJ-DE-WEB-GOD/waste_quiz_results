@@ -1,1 +1,543 @@
-*{box-sizing:border-box}body{margin:0;background:#f4f7f5;color:#18251e;font-family:Segoe UI,Arial,sans-serif}header{height:70px;background:#173b2b;color:white;display:flex;align-items:center;justify-content:space-between;padding:0 6%;position:sticky;top:0;z-index:5}header a{color:white;text-decoration:none;border:1px solid #ffffff55;padding:9px 15px;border-radius:9px}main{max-width:950px;margin:auto;padding:35px 18px 70px}.hero{background:linear-gradient(135deg,#173b2b,#36704f);color:white;border-radius:22px;padding:42px 32px;margin-bottom:22px}.hero span{font-size:12px;letter-spacing:2px}.hero h1{font-size:42px;margin:15px 0 10px}.hero p{line-height:1.6}.card{background:white;border:1px solid #e0e8e2;border-radius:18px;padding:28px;margin-bottom:20px;box-shadow:0 7px 25px #173b2b0b}.card h2{margin-top:0}.question{padding:22px 0;border-bottom:1px solid #edf0ee}.question:last-child{border:0}.question h3{font-size:17px;line-height:1.45;margin:0 0 12px}.question small{display:block;color:#6c7971;margin-bottom:10px}.options{display:grid;gap:8px}.options label{padding:12px;border:1px solid #dfe7e1;border-radius:10px;cursor:pointer;background:#fbfcfb}.options label:hover{background:#f0f7f2}.options input{accent-color:#286344}.question>input{width:100%;margin-top:10px;padding:12px;border:1px solid #dfe7e1;border-radius:9px;font:inherit}.submit{text-align:center}.submit button,.success button{background:#1d6540;color:white;border:0;border-radius:10px;padding:14px 24px;font-weight:700;font-size:16px;cursor:pointer}.hidden{display:none}.success{text-align:center;padding:50px}@media(max-width:600px){.hero h1{font-size:31px}.card{padding:20px}}
+/* ============================================
+   WASTE MANAGEMENT ON CAMPUS
+   styles.css
+   ============================================ */
+
+
+/* ============================================
+   RESET
+   ============================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+/* ============================================
+   BODY
+   ============================================ */
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f6f8;
+    color: #222;
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+
+/* ============================================
+   MAIN CONTAINER
+   ============================================ */
+
+.container {
+    width: 92%;
+    max-width: 900px;
+    margin: 40px auto;
+}
+
+
+/* ============================================
+   HEADER
+   ============================================ */
+
+header {
+    background: linear-gradient(
+        135deg,
+        #14532d,
+        #16a34a
+    );
+
+    color: white;
+    text-align: center;
+
+    padding: 45px 25px;
+
+    border-radius: 18px;
+
+    margin-bottom: 25px;
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.12);
+}
+
+
+header h1 {
+    font-size: 32px;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+
+header p {
+    font-size: 16px;
+    opacity: 0.95;
+}
+
+
+/* ============================================
+   SURVEY CARD
+   ============================================ */
+
+form {
+    background: white;
+
+    padding: 30px;
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+
+/* ============================================
+   SECTION HEADINGS
+   ============================================ */
+
+.section-title {
+    margin-top: 30px;
+    margin-bottom: 20px;
+
+    padding: 14px 18px;
+
+    background: #ecfdf5;
+
+    color: #166534;
+
+    border-left: 5px solid #16a34a;
+
+    border-radius: 8px;
+
+    font-size: 21px;
+
+    font-weight: 700;
+}
+
+
+.section-title:first-child {
+    margin-top: 0;
+}
+
+
+/* ============================================
+   QUESTION CARD
+   ============================================ */
+
+.question {
+    background: #ffffff;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 12px;
+
+    padding: 20px;
+
+    margin-bottom: 18px;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.question:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 6px 18px rgba(0, 0, 0, 0.07);
+}
+
+
+/* ============================================
+   QUESTION TEXT
+   ============================================ */
+
+.question label.question-title {
+    display: block;
+
+    font-size: 16px;
+
+    font-weight: 700;
+
+    color: #111827;
+
+    margin-bottom: 14px;
+}
+
+
+/* ============================================
+   FULL NAME
+   ============================================ */
+
+#full_name {
+    width: 100%;
+
+    padding: 14px 15px;
+
+    border: 1px solid #d1d5db;
+
+    border-radius: 9px;
+
+    font-size: 16px;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+#full_name:focus {
+    border-color: #16a34a;
+
+    box-shadow:
+        0 0 0 3px rgba(22, 163, 74, 0.15);
+}
+
+
+/* ============================================
+   RADIO AND CHECKBOX OPTIONS
+   ============================================ */
+
+.options {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+
+.options label {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 11px 13px;
+
+    background: #f9fafb;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+
+.options label:hover {
+    background: #ecfdf5;
+
+    border-color: #86efac;
+}
+
+
+/* ============================================
+   RADIO / CHECKBOX INPUT
+   ============================================ */
+
+.options input[type="radio"],
+.options input[type="checkbox"] {
+    width: 18px;
+
+    height: 18px;
+
+    accent-color: #16a34a;
+
+    cursor: pointer;
+
+    flex-shrink: 0;
+}
+
+
+/* ============================================
+   OTHER INPUT
+   ============================================ */
+
+.other-input {
+    display: none;
+
+    width: 100%;
+
+    margin-top: 10px;
+
+    padding: 12px 14px;
+
+    border: 1px solid #d1d5db;
+
+    border-radius: 8px;
+
+    font-size: 15px;
+
+    outline: none;
+}
+
+
+.other-input:focus {
+    border-color: #16a34a;
+
+    box-shadow:
+        0 0 0 3px rgba(22, 163, 74, 0.12);
+}
+
+
+/* ============================================
+   TEXT INPUTS
+   ============================================ */
+
+input[type="text"] {
+    font-family: inherit;
+}
+
+
+/* ============================================
+   SUBMIT BUTTON
+   ============================================ */
+
+#submitButton {
+    width: 100%;
+
+    border: none;
+
+    padding: 16px;
+
+    margin-top: 20px;
+
+    background: linear-gradient(
+        135deg,
+        #15803d,
+        #16a34a
+    );
+
+    color: white;
+
+    font-size: 17px;
+
+    font-weight: 700;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        opacity 0.2s ease;
+}
+
+
+#submitButton:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 20px rgba(22, 163, 74, 0.3);
+}
+
+
+#submitButton:active {
+    transform: translateY(0);
+}
+
+
+#submitButton:disabled {
+    opacity: 0.6;
+
+    cursor: not-allowed;
+
+    transform: none;
+
+    box-shadow: none;
+}
+
+
+/* ============================================
+   MESSAGE
+   ============================================ */
+
+.message {
+    margin-top: 20px;
+
+    padding: 15px;
+
+    border-radius: 9px;
+
+    font-weight: 600;
+
+    text-align: center;
+}
+
+
+/* ============================================
+   SUCCESS MESSAGE
+   ============================================ */
+
+.message.success {
+    background: #dcfce7;
+
+    color: #166534;
+
+    border: 1px solid #86efac;
+}
+
+
+/* ============================================
+   ERROR MESSAGE
+   ============================================ */
+
+.message.error {
+    background: #fee2e2;
+
+    color: #991b1b;
+
+    border: 1px solid #fca5a5;
+}
+
+
+/* ============================================
+   INFO MESSAGE
+   ============================================ */
+
+.message.info {
+    background: #dbeafe;
+
+    color: #1e40af;
+
+    border: 1px solid #93c5fd;
+}
+
+
+/* ============================================
+   REQUIRED INDICATOR
+   ============================================ */
+
+.required {
+    color: #dc2626;
+
+    font-weight: 700;
+}
+
+
+/* ============================================
+   FOOTER
+   ============================================ */
+
+footer {
+    text-align: center;
+
+    padding: 25px 10px;
+
+    color: #6b7280;
+
+    font-size: 14px;
+}
+
+
+/* ============================================
+   MOBILE DESIGN
+   ============================================ */
+
+@media (max-width: 700px) {
+
+    .container {
+        width: 95%;
+
+        margin: 20px auto;
+    }
+
+
+    header {
+        padding: 30px 18px;
+
+        border-radius: 14px;
+    }
+
+
+    header h1 {
+        font-size: 25px;
+    }
+
+
+    header p {
+        font-size: 14px;
+    }
+
+
+    form {
+        padding: 18px;
+
+        border-radius: 14px;
+    }
+
+
+    .section-title {
+        font-size: 18px;
+
+        padding: 12px 14px;
+    }
+
+
+    .question {
+        padding: 15px;
+
+        border-radius: 10px;
+    }
+
+
+    .question label.question-title {
+        font-size: 15px;
+    }
+
+
+    .options label {
+        padding: 10px;
+    }
+
+
+    #submitButton {
+        font-size: 16px;
+
+        padding: 14px;
+    }
+}
+
+
+/* ============================================
+   SMALL PHONES
+   ============================================ */
+
+@media (max-width: 400px) {
+
+    header h1 {
+        font-size: 22px;
+    }
+
+
+    header p {
+        font-size: 13px;
+    }
+
+
+    form {
+        padding: 14px;
+    }
+
+
+    .question {
+        padding: 13px;
+    }
+
+
+    .section-title {
+        font-size: 17px;
+    }
+}
