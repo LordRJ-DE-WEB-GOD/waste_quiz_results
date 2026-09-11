@@ -2,466 +2,1314 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Waste Management Survey - Admin Dashboard</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="config.js"></script>
-    <script src="admin.js" defer></script>
+    <meta
+        name="theme-color"
+        content="#071c15"
+    >
+
+    <title>EcoPulse | Admin Dashboard</title>
 
     <style>
+
+        /* =====================================================
+           RESET
+        ===================================================== */
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
 
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f4f6f8;
-            color: #222;
+
+        /* =====================================================
+           ROOT
+        ===================================================== */
+
+        :root {
+            --forest: #123c2b;
+            --deep-green: #071c15;
+            --green: #1f8f5f;
+            --emerald: #35c982;
+            --lime: #a8e063;
+
+            --background: #f2f8f4;
+            --white: #ffffff;
+
+            --text: #17342a;
+            --muted: #6c8178;
+
+            --border: #dcebe2;
+
+            --danger: #d9534f;
+
+            --shadow:
+                0 20px 60px rgba(7, 28, 21, 0.10);
         }
+
+
+        /* =====================================================
+           BODY
+        ===================================================== */
+
+        body {
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Roboto,
+                Arial,
+                sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at top left,
+                    rgba(53, 201, 130, 0.12),
+                    transparent 30%
+                ),
+
+                radial-gradient(
+                    circle at bottom right,
+                    rgba(168, 224, 99, 0.12),
+                    transparent 30%
+                ),
+
+                var(--background);
+
+            color: var(--text);
+
+            min-height: 100vh;
+        }
+
+
+        button,
+        input {
+            font-family: inherit;
+        }
+
+
+        button {
+            cursor: pointer;
+        }
+
+
+        /* =====================================================
+           UTILITY
+        ===================================================== */
 
         .hidden {
             display: none !important;
         }
 
-        /* LOGIN */
 
-        .login-container {
+        /* =====================================================
+           LOGIN
+        ===================================================== */
+
+        #loginSection {
             min-height: 100vh;
+
             display: flex;
-            justify-content: center;
+
             align-items: center;
-            padding: 20px;
+            justify-content: center;
+
+            padding: 24px;
         }
 
-        .login-card {
+
+        .login-wrapper {
             width: 100%;
             max-width: 430px;
-            background: white;
-            padding: 40px;
-            border-radius: 16px;
-            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.1);
         }
+
+
+        .login-card {
+            background: rgba(255, 255, 255, 0.92);
+
+            border: 1px solid var(--border);
+
+            border-radius: 28px;
+
+            padding: 42px 36px;
+
+            box-shadow: var(--shadow);
+
+            backdrop-filter: blur(18px);
+
+            text-align: center;
+        }
+
+
+        .login-logo {
+            width: 76px;
+            height: 76px;
+
+            margin: 0 auto 20px;
+
+            border-radius: 24px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            font-size: 38px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--deep-green),
+                    var(--green)
+                );
+
+            color: white;
+
+            box-shadow:
+                0 12px 35px rgba(31, 143, 95, 0.25);
+        }
+
 
         .login-card h1 {
-            text-align: center;
-            margin-bottom: 10px;
-        }
+            color: var(--deep-green);
 
-        .login-card p {
-            text-align: center;
-            color: #666;
-            margin-bottom: 30px;
-        }
+            font-size: 30px;
 
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
             margin-bottom: 8px;
-            font-weight: bold;
         }
 
-        .form-group input {
+
+        .login-card .subtitle {
+            color: var(--muted);
+
+            margin-bottom: 30px;
+
+            font-size: 14px;
+        }
+
+
+        .input-group {
+            text-align: left;
+
+            margin-bottom: 18px;
+        }
+
+
+        .input-group label {
+            display: block;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            margin-bottom: 8px;
+
+            color: var(--text);
+        }
+
+
+        .input-group input {
             width: 100%;
-            padding: 13px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
+
+            padding: 14px 15px;
+
+            border: 1px solid var(--border);
+
+            border-radius: 13px;
+
+            outline: none;
+
+            background: #fbfefc;
+
+            color: var(--text);
+
+            font-size: 15px;
+
+            transition: 0.2s;
+        }
+
+
+        .input-group input:focus {
+            border-color: var(--emerald);
+
+            box-shadow:
+                0 0 0 4px rgba(
+                    53,
+                    201,
+                    130,
+                    0.12
+                );
+        }
+
+
+        #loginButton {
+            width: 100%;
+
+            border: none;
+
+            border-radius: 14px;
+
+            padding: 15px;
+
+            margin-top: 8px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--green),
+                    var(--emerald)
+                );
+
+            color: white;
+
+            font-size: 15px;
+
+            font-weight: 800;
+
+            transition: 0.2s;
+        }
+
+
+        #loginButton:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 10px 25px rgba(
+                    31,
+                    143,
+                    95,
+                    0.25
+                );
+        }
+
+
+        #loginButton:disabled {
+            opacity: 0.65;
+
+            cursor: not-allowed;
+
+            transform: none;
+        }
+
+
+        #loginMessage {
+            min-height: 22px;
+
+            margin-top: 15px;
+
+            color: var(--danger);
+
+            font-size: 13px;
+
+            font-weight: 600;
+        }
+
+
+        /* =====================================================
+           DASHBOARD
+        ===================================================== */
+
+        #dashboardSection {
+            min-height: 100vh;
+        }
+
+
+        /* =====================================================
+           TOP BAR
+        ===================================================== */
+
+        .topbar {
+            position: sticky;
+
+            top: 0;
+
+            z-index: 100;
+
+            background:
+                rgba(
+                    7,
+                    28,
+                    21,
+                    0.95
+                );
+
+            backdrop-filter: blur(18px);
+
+            border-bottom:
+                1px solid rgba(
+                    255,
+                    255,
+                    255,
+                    0.08
+                );
+
+            color: white;
+        }
+
+
+        .topbar-inner {
+            width: min(
+                1400px,
+                calc(100% - 40px)
+            );
+
+            margin: auto;
+
+            min-height: 76px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 20px;
+        }
+
+
+        .brand {
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+        }
+
+
+        .brand-icon {
+            width: 45px;
+            height: 45px;
+
+            border-radius: 14px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            font-size: 23px;
+
+            background:
+                rgba(
+                    53,
+                    201,
+                    130,
+                    0.16
+                );
+
+            border:
+                1px solid rgba(
+                    53,
+                    201,
+                    130,
+                    0.3
+                );
+        }
+
+
+        .brand h2 {
+            font-size: 18px;
+
+            letter-spacing: -0.3px;
+        }
+
+
+        .brand span {
+            display: block;
+
+            color: #a8c1b5;
+
+            font-size: 10px;
+
+            letter-spacing: 1.5px;
+
+            margin-top: 2px;
+        }
+
+
+        #logoutButton {
+            border:
+                1px solid rgba(
+                    255,
+                    255,
+                    255,
+                    0.15
+                );
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.06
+                );
+
+            color: white;
+
+            border-radius: 11px;
+
+            padding: 10px 16px;
+
+            font-weight: 700;
+
+            transition: 0.2s;
+        }
+
+
+        #logoutButton:hover {
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.12
+                );
+        }
+
+
+        /* =====================================================
+           MAIN
+        ===================================================== */
+
+        .dashboard-container {
+            width: min(
+                1400px,
+                calc(100% - 40px)
+            );
+
+            margin: auto;
+
+            padding: 38px 0 60px;
+        }
+
+
+        .dashboard-heading {
+            margin-bottom: 28px;
+        }
+
+
+        .dashboard-heading h1 {
+            font-size: clamp(
+                28px,
+                4vw,
+                42px
+            );
+
+            color: var(--deep-green);
+
+            letter-spacing: -1.2px;
+        }
+
+
+        .dashboard-heading p {
+            color: var(--muted);
+
+            margin-top: 7px;
+
             font-size: 15px;
         }
 
-        .login-btn {
-            width: 100%;
-            padding: 14px;
-            border: none;
-            border-radius: 8px;
-            background: #222;
-            color: white;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-        }
 
-        .login-btn:hover {
-            background: #444;
-        }
+        /* =====================================================
+           STAT CARDS
+        ===================================================== */
 
-        #loginMessage {
-            margin-top: 15px;
-            text-align: center;
-            color: #c62828;
-        }
-
-        /* DASHBOARD */
-
-        .dashboard {
-            min-height: 100vh;
-        }
-
-        .topbar {
-            background: #171717;
-            color: white;
-            padding: 18px 30px;
-        }
-
-        .topbar-content {
-            max-width: 1400px;
-            margin: auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .brand h1 {
-            font-size: 22px;
-        }
-
-        .brand p {
-            color: #bbb;
-            font-size: 13px;
-            margin-top: 4px;
-        }
-
-        .logout-btn {
-            padding: 10px 18px;
-            border: 1px solid #777;
-            background: transparent;
-            color: white;
-            border-radius: 7px;
-            cursor: pointer;
-        }
-
-        .logout-btn:hover {
-            background: white;
-            color: #222;
-        }
-
-        .dashboard-container {
-            max-width: 1400px;
-            margin: auto;
-            padding: 30px;
-        }
-
-        /* STAT CARDS */
-
-        .stats {
+        .stats-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+
+            grid-template-columns:
+                repeat(
+                    3,
+                    minmax(0, 1fr)
+                );
+
             gap: 20px;
-            margin-bottom: 30px;
+
+            margin-bottom: 28px;
         }
+
 
         .stat-card {
+            position: relative;
+
+            overflow: hidden;
+
             background: white;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 22px;
+
             padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.07);
+
+            box-shadow:
+                0 10px 35px
+                rgba(
+                    7,
+                    28,
+                    21,
+                    0.06
+                );
         }
 
-        .stat-card h3 {
-            color: #666;
-            font-size: 14px;
-            margin-bottom: 12px;
+
+        .stat-card::after {
+            content: "";
+
+            position: absolute;
+
+            width: 100px;
+            height: 100px;
+
+            right: -35px;
+            bottom: -45px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(
+                    53,
+                    201,
+                    130,
+                    0.08
+                );
         }
 
-        .stat-number {
-            font-size: 34px;
-            font-weight: bold;
+
+        .stat-label {
+            color: var(--muted);
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.7px;
         }
 
-        /* TOOLBAR */
+
+        .stat-value {
+            color: var(--deep-green);
+
+            font-size: 38px;
+
+            font-weight: 850;
+
+            margin-top: 8px;
+        }
+
+
+        .stat-description {
+            color: var(--muted);
+
+            font-size: 12px;
+
+            margin-top: 5px;
+        }
+
+
+        /* =====================================================
+           TOOLBAR
+        ===================================================== */
 
         .toolbar {
             background: white;
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 25px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 20px;
+
+            padding: 17px;
+
+            margin-bottom: 18px;
+
             display: flex;
-            gap: 15px;
+
+            align-items: center;
+
+            gap: 12px;
+
             flex-wrap: wrap;
+
+            box-shadow:
+                0 8px 30px
+                rgba(
+                    7,
+                    28,
+                    21,
+                    0.05
+                );
         }
 
-        .search-box {
+
+        #searchInput {
             flex: 1;
-            min-width: 250px;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 7px;
-            font-size: 15px;
+
+            min-width: 220px;
+
+            padding: 12px 15px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 12px;
+
+            outline: none;
+
+            font-size: 14px;
+
+            background: #fbfefc;
         }
+
+
+        #searchInput:focus {
+            border-color:
+                var(--emerald);
+
+            box-shadow:
+                0 0 0 4px
+                rgba(
+                    53,
+                    201,
+                    130,
+                    0.1
+                );
+        }
+
 
         .toolbar button {
-            padding: 12px 18px;
             border: none;
-            border-radius: 7px;
-            cursor: pointer;
-            font-weight: bold;
+
+            border-radius: 11px;
+
+            padding: 12px 16px;
+
+            font-weight: 700;
+
+            font-size: 13px;
+
+            transition: 0.2s;
         }
 
-        .refresh-btn {
-            background: #eee;
+
+        #refreshButton {
+            background:
+                #e9f7ef;
+
+            color:
+                var(--forest);
         }
 
-        .export-btn {
-            background: #222;
+
+        #exportButton {
+            background:
+                var(--deep-green);
+
             color: white;
         }
 
-        /* RESPONSES */
 
-        .responses-section {
+        .toolbar button:hover {
+            transform:
+                translateY(-1px);
+        }
+
+
+        .toolbar button:disabled {
+            opacity: 0.6;
+
+            cursor: not-allowed;
+        }
+
+
+        /* =====================================================
+           TABLE CARD
+        ===================================================== */
+
+        .table-card {
             background: white;
-            border-radius: 12px;
-            padding: 25px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 22px;
+
             overflow: hidden;
+
+            box-shadow:
+                0 10px 35px
+                rgba(
+                    7,
+                    28,
+                    21,
+                    0.06
+                );
         }
 
-        .responses-header {
+
+        .table-header {
+            padding: 20px 22px;
+
             display: flex;
-            justify-content: space-between;
+
             align-items: center;
-            margin-bottom: 20px;
+
+            justify-content: space-between;
+
+            border-bottom:
+                1px solid var(--border);
         }
 
-        .responses-header h2 {
-            font-size: 20px;
+
+        .table-header h2 {
+            color: var(--deep-green);
+
+            font-size: 18px;
         }
 
-        .response-count {
-            color: #666;
-            font-size: 14px;
+
+        #responseCount {
+            color: var(--muted);
+
+            font-size: 13px;
         }
+
 
         .table-wrapper {
             overflow-x: auto;
         }
 
+
         table {
             width: 100%;
+
             border-collapse: collapse;
-            min-width: 900px;
+
+            min-width: 700px;
         }
 
-        th,
-        td {
-            padding: 14px;
-            text-align: left;
-            border-bottom: 1px solid #eee;
-            vertical-align: top;
+
+        thead {
+            background:
+                #f5faf7;
         }
+
 
         th {
-            background: #f5f5f5;
+            text-align: left;
+
+            padding: 15px 20px;
+
+            font-size: 11px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.8px;
+
+            color: var(--muted);
+
+            border-bottom:
+                1px solid var(--border);
+        }
+
+
+        td {
+            padding: 17px 20px;
+
+            border-bottom:
+                1px solid #edf3ef;
+
+            font-size: 14px;
+
+            vertical-align: middle;
+        }
+
+
+        tbody tr {
+            transition: 0.15s;
+        }
+
+
+        tbody tr:hover {
+            background:
+                #f9fcfa;
+        }
+
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+
+        .name-cell {
+            font-weight: 750;
+
+            color:
+                var(--deep-green);
+        }
+
+
+        .date-cell {
+            color: var(--muted);
+
             font-size: 13px;
         }
 
-        td {
+
+        .answers-btn {
+            border: none;
+
+            background:
+                #e7f8ee;
+
+            color:
+                var(--forest);
+
+            padding: 9px 13px;
+
+            border-radius: 9px;
+
+            font-size: 12px;
+
+            font-weight: 800;
+
+            transition: 0.2s;
+        }
+
+
+        .answers-btn:hover {
+            background:
+                var(--emerald);
+
+            color: white;
+
+            transform:
+                translateY(-1px);
+        }
+
+
+        #emptyMessage {
+            text-align: center;
+
+            padding: 55px 20px;
+
+            color: var(--muted);
+
             font-size: 14px;
         }
 
-        tr:hover td {
-            background: #fafafa;
-        }
 
-        .name-cell {
-            font-weight: bold;
-        }
+        /* =====================================================
+           MODAL
+        ===================================================== */
 
-        .date-cell {
-            white-space: nowrap;
-            color: #666;
-        }
-
-        .answers-btn {
-            padding: 7px 12px;
-            border: none;
-            border-radius: 6px;
-            background: #222;
-            color: white;
-            cursor: pointer;
-        }
-
-        /* MODAL */
-
-        .modal {
+        #answersModal {
             position: fixed;
+
             inset: 0;
-            background: rgba(0, 0, 0, 0.65);
+
+            z-index: 500;
+
+            background:
+                rgba(
+                    2,
+                    15,
+                    10,
+                    0.72
+                );
+
+            backdrop-filter:
+                blur(8px);
+
             display: flex;
-            justify-content: center;
+
             align-items: center;
+
+            justify-content: center;
+
             padding: 20px;
-            z-index: 1000;
         }
 
-        .modal-content {
+
+        .modal-card {
+            width: min(
+                760px,
+                100%
+            );
+
+            max-height:
+                calc(100vh - 40px);
+
+            overflow: hidden;
+
             background: white;
-            width: 100%;
-            max-width: 850px;
-            max-height: 90vh;
-            overflow-y: auto;
-            border-radius: 14px;
-            padding: 30px;
+
+            border-radius: 25px;
+
+            box-shadow:
+                0 30px 100px
+                rgba(
+                    0,
+                    0,
+                    0,
+                    0.25
+                );
+
+            display: flex;
+
+            flex-direction: column;
         }
+
 
         .modal-header {
+            padding: 22px 25px;
+
+            background:
+                var(--deep-green);
+
+            color: white;
+
             display: flex;
-            justify-content: space-between;
+
             align-items: center;
-            margin-bottom: 25px;
-            gap: 15px;
+
+            justify-content: space-between;
+
+            gap: 20px;
         }
 
-        .close-modal {
-            border: none;
-            background: #eee;
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 18px;
+
+        .modal-header h2 {
+            font-size: 20px;
         }
+
+
+        .modal-header p {
+            margin-top: 3px;
+
+            color: #b5cfc3;
+
+            font-size: 12px;
+        }
+
+
+        #closeModal {
+            width: 38px;
+            height: 38px;
+
+            flex-shrink: 0;
+
+            border: none;
+
+            border-radius: 10px;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.1
+                );
+
+            color: white;
+
+            font-size: 22px;
+
+            line-height: 1;
+
+            transition: 0.2s;
+        }
+
+
+        #closeModal:hover {
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.2
+                );
+        }
+
+
+        #answersContainer {
+            padding: 22px 25px;
+
+            overflow-y: auto;
+        }
+
 
         .answer {
-            padding: 15px 0;
-            border-bottom: 1px solid #eee;
+            padding: 17px;
+
+            margin-bottom: 12px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 14px;
+
+            background:
+                #f9fcfa;
         }
+
+
+        .answer:last-child {
+            margin-bottom: 0;
+        }
+
 
         .answer strong {
             display: block;
+
+            color:
+                var(--deep-green);
+
+            font-size: 13px;
+
+            line-height: 1.5;
+
             margin-bottom: 7px;
         }
 
+
         .answer span {
-            color: #555;
-            line-height: 1.5;
+            display: block;
+
+            color:
+                var(--muted);
+
+            font-size: 14px;
+
+            line-height: 1.6;
         }
 
-        /* EMPTY */
 
-        .empty {
-            text-align: center;
-            padding: 50px 20px;
-            color: #777;
-        }
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
 
-        /* MOBILE */
+        @media (max-width: 850px) {
 
-        @media (max-width: 800px) {
-            .stats {
-                grid-template-columns: 1fr;
+            .stats-grid {
+                grid-template-columns:
+                    1fr;
             }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .topbar-inner {
+                width:
+                    calc(100% - 25px);
+
+                min-height: 68px;
+            }
+
+
+            .brand h2 {
+                font-size: 16px;
+            }
+
+
+            .brand span {
+                font-size: 8px;
+            }
+
+
+            .brand-icon {
+                width: 40px;
+                height: 40px;
+
+                font-size: 20px;
+            }
+
 
             .dashboard-container {
-                padding: 15px;
+                width:
+                    calc(100% - 25px);
+
+                padding-top: 28px;
             }
 
-            .topbar {
-                padding: 15px;
+
+            .dashboard-heading h1 {
+                font-size: 30px;
             }
 
-            .topbar-content {
-                align-items: flex-start;
+
+            .toolbar {
+                align-items: stretch;
             }
 
-            .brand h1 {
-                font-size: 18px;
+
+            #searchInput {
+                min-width: 100%;
+                width: 100%;
             }
+
+
+            .toolbar button {
+                flex: 1;
+            }
+
 
             .login-card {
-                padding: 25px;
+                padding: 34px 24px;
             }
 
-            .responses-section {
-                padding: 15px;
+
+            .modal-card {
+                border-radius: 20px;
             }
+
+
+            .modal-header {
+                padding: 18px;
+            }
+
+
+            #answersContainer {
+                padding: 18px;
+            }
+
         }
+
     </style>
 </head>
 
+
 <body>
 
-    <!-- LOGIN -->
 
-    <section id="loginSection" class="login-container">
+    <!-- =====================================================
+         LOGIN SECTION
+    ====================================================== -->
 
-        <div class="login-card">
+    <section id="loginSection">
 
-            <h1>Admin Login</h1>
+        <div class="login-wrapper">
 
-            <p>Waste Management Survey Dashboard</p>
+            <div class="login-card">
 
-            <form id="loginForm">
-
-                <div class="form-group">
-
-                    <label for="email">Email</label>
-
-                    <input
-                        type="email"
-                        id="email"
-                        placeholder="Enter admin email"
-                        required
-                    >
-
+                <div class="login-logo">
+                    ♻
                 </div>
 
-                <div class="form-group">
+                <h1>
+                    EcoPulse
+                </h1>
 
-                    <label for="password">Password</label>
+                <p class="subtitle">
+                    Secure administrator dashboard
+                </p>
 
-                    <input
-                        type="password"
-                        id="password"
-                        placeholder="Enter password"
-                        required
+
+                <form id="loginForm">
+
+                    <div class="input-group">
+
+                        <label for="email">
+                            Admin Email
+                        </label>
+
+                        <input
+                            type="email"
+                            id="email"
+                            placeholder="Enter admin email"
+                            autocomplete="email"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label for="password">
+                            Password
+                        </label>
+
+                        <input
+                            type="password"
+                            id="password"
+                            placeholder="Enter password"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        id="loginButton"
                     >
+                        Login
+                    </button>
 
-                </div>
 
-                <button
-                    type="submit"
-                    class="login-btn"
-                    id="loginButton"
-                >
-                    Login
-                </button>
+                    <p id="loginMessage"></p>
 
-                <p id="loginMessage"></p>
+                </form>
 
-            </form>
+            </div>
 
         </div>
 
     </section>
 
 
-    <!-- DASHBOARD -->
 
-    <section id="dashboardSection" class="dashboard hidden">
+    <!-- =====================================================
+         DASHBOARD SECTION
+    ====================================================== -->
+
+    <section
+        id="dashboardSection"
+        class="hidden"
+    >
+
+
+        <!-- TOP BAR -->
 
         <header class="topbar">
 
-            <div class="topbar-content">
+            <div class="topbar-inner">
 
                 <div class="brand">
 
-                    <h1>Waste Management Survey</h1>
+                    <div class="brand-icon">
+                        ♻
+                    </div>
 
-                    <p>Administrator Dashboard</p>
+                    <div>
+
+                        <h2>
+                            EcoPulse Admin
+                        </h2>
+
+                        <span>
+                            CAMPUS ENVIRONMENT SYSTEM
+                        </span>
+
+                    </div>
 
                 </div>
 
-                <button
-                    id="logoutButton"
-                    class="logout-btn"
-                >
+
+                <button id="logoutButton">
                     Logout
                 </button>
 
@@ -470,96 +1318,145 @@
         </header>
 
 
+
+        <!-- DASHBOARD -->
+
         <main class="dashboard-container">
+
+
+            <!-- HEADING -->
+
+            <div class="dashboard-heading">
+
+                <h1>
+                    Survey Dashboard
+                </h1>
+
+                <p>
+                    Monitor and analyse campus waste-management responses.
+                </p>
+
+            </div>
+
+
 
             <!-- STATISTICS -->
 
-            <section class="stats">
+            <div class="stats-grid">
+
+
+                <!-- TOTAL -->
 
                 <div class="stat-card">
 
-                    <h3>Total Responses</h3>
+                    <div class="stat-label">
+                        Total Responses
+                    </div>
 
                     <div
-                        class="stat-number"
+                        class="stat-value"
                         id="totalResponses"
                     >
                         0
                     </div>
 
+                    <div class="stat-description">
+                        Submitted survey responses
+                    </div>
+
                 </div>
 
 
+                <!-- BINS -->
+
                 <div class="stat-card">
 
-                    <h3>Students Who Say There Are Enough Bins</h3>
+                    <div class="stat-label">
+                        Enough Dustbins
+                    </div>
 
                     <div
-                        class="stat-number"
+                        class="stat-value"
                         id="enoughBinsPercentage"
                     >
                         0%
                     </div>
 
+                    <div class="stat-description">
+                        Respondents who answered "Yes"
+                    </div>
+
                 </div>
 
 
+                <!-- CLEANLINESS -->
+
                 <div class="stat-card">
 
-                    <h3>Campus Cleanliness Satisfaction</h3>
+                    <div class="stat-label">
+                        Cleanliness Satisfaction
+                    </div>
 
                     <div
-                        class="stat-number"
+                        class="stat-value"
                         id="cleanlinessPercentage"
                     >
                         0%
                     </div>
 
+                    <div class="stat-description">
+                        Satisfied or very satisfied
+                    </div>
+
                 </div>
 
-            </section>
+            </div>
 
 
-            <!-- SEARCH / TOOLS -->
 
-            <section class="toolbar">
+            <!-- TOOLBAR -->
+
+            <div class="toolbar">
 
                 <input
-                    type="text"
+                    type="search"
                     id="searchInput"
-                    class="search-box"
-                    placeholder="Search responses by name..."
+                    placeholder="Search respondents by name..."
+                    autocomplete="off"
                 >
+
 
                 <button
                     id="refreshButton"
-                    class="refresh-btn"
+                    type="button"
                 >
-                    Refresh
+                    ↻ Refresh
                 </button>
+
 
                 <button
                     id="exportButton"
-                    class="export-btn"
+                    type="button"
                 >
-                    Export CSV
+                    ↓ Export CSV
                 </button>
 
-            </section>
+            </div>
+
 
 
             <!-- RESPONSES -->
 
-            <section class="responses-section">
+            <div class="table-card">
 
-                <div class="responses-header">
 
-                    <h2>Survey Responses</h2>
+                <div class="table-header">
 
-                    <span
-                        id="responseCount"
-                        class="response-count"
-                    >
+                    <h2>
+                        Survey Responses
+                    </h2>
+
+                    <span id="responseCount">
                         0 responses
                     </span>
 
@@ -574,20 +1471,30 @@
 
                             <tr>
 
-                                <th>#</th>
+                                <th>
+                                    #
+                                </th>
 
-                                <th>Full Name</th>
+                                <th>
+                                    Full Name
+                                </th>
 
-                                <th>Date</th>
+                                <th>
+                                    Date
+                                </th>
 
-                                <th>View Answers</th>
+                                <th>
+                                    Answers
+                                </th>
 
                             </tr>
 
                         </thead>
 
-                        <tbody id="responsesTableBody">
 
+                        <tbody
+                            id="responsesTableBody"
+                        >
                         </tbody>
 
                     </table>
@@ -597,42 +1504,51 @@
 
                 <div
                     id="emptyMessage"
-                    class="empty hidden"
+                    class="hidden"
                 >
                     No survey responses found.
                 </div>
 
-            </section>
+            </div>
+
 
         </main>
 
     </section>
 
 
-    <!-- ANSWERS MODAL -->
+
+    <!-- =====================================================
+         ANSWERS MODAL
+    ====================================================== -->
 
     <div
         id="answersModal"
-        class="modal hidden"
+        class="hidden"
     >
 
-        <div class="modal-content">
+        <div class="modal-card">
+
 
             <div class="modal-header">
 
                 <div>
 
                     <h2 id="modalName">
-                        Survey Response
+                        Respondent
                     </h2>
 
-                    <p id="modalDate"></p>
+                    <p id="modalDate">
+                        Submitted:
+                    </p>
 
                 </div>
 
+
                 <button
                     id="closeModal"
-                    class="close-modal"
+                    type="button"
+                    aria-label="Close"
                 >
                     ×
                 </button>
@@ -640,11 +1556,38 @@
             </div>
 
 
-            <div id="answersContainer"></div>
+            <div id="answersContainer">
+            </div>
+
 
         </div>
 
     </div>
+
+
+
+    <!-- =====================================================
+         SUPABASE
+    ====================================================== -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    ></script>
+
+
+    <!-- =====================================================
+         CONFIG
+    ====================================================== -->
+
+    <script src="config.js"></script>
+
+
+    <!-- =====================================================
+         ADMIN JAVASCRIPT
+    ====================================================== -->
+
+    <script src="admin.js"></script>
+
 
 </body>
 </html>
