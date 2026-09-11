@@ -1,11 +1,13 @@
 // ============================================================
-// WASTE MANAGEMENT SURVEY - ADMIN DASHBOARD
+// ECOPULSE
+// CAMPUS WASTE MANAGEMENT SURVEY
+// ADMIN DASHBOARD
 // ============================================================
 
 
-// ------------------------------------------------------------
-// SUPABASE
-// ------------------------------------------------------------
+// ============================================================
+// SUPABASE CONNECTION
+// ============================================================
 
 const supabaseClient = window.supabase.createClient(
     SUPABASE_URL,
@@ -13,158 +15,151 @@ const supabaseClient = window.supabase.createClient(
 );
 
 
-// ------------------------------------------------------------
-// ELEMENTS
-// ------------------------------------------------------------
+// ============================================================
+// PAGE ELEMENTS
+// ============================================================
 
-const loginSection = document.getElementById("loginSection");
-const dashboardSection = document.getElementById("dashboardSection");
+const loginSection =
+    document.getElementById("loginSection");
 
-const loginForm = document.getElementById("loginForm");
-const loginButton = document.getElementById("loginButton");
-const loginMessage = document.getElementById("loginMessage");
+const dashboardSection =
+    document.getElementById("dashboardSection");
 
-const logoutButton = document.getElementById("logoutButton");
+const loginForm =
+    document.getElementById("loginForm");
 
-const totalResponses = document.getElementById("totalResponses");
-const enoughBinsPercentage = document.getElementById("enoughBinsPercentage");
-const cleanlinessPercentage = document.getElementById("cleanlinessPercentage");
+const loginButton =
+    document.getElementById("loginButton");
 
-const searchInput = document.getElementById("searchInput");
-const refreshButton = document.getElementById("refreshButton");
-const exportButton = document.getElementById("exportButton");
+const loginMessage =
+    document.getElementById("loginMessage");
 
-const responsesTableBody = document.getElementById("responsesTableBody");
-const responseCount = document.getElementById("responseCount");
-const emptyMessage = document.getElementById("emptyMessage");
+const logoutButton =
+    document.getElementById("logoutButton");
 
-const answersModal = document.getElementById("answersModal");
-const closeModal = document.getElementById("closeModal");
-const modalName = document.getElementById("modalName");
-const modalDate = document.getElementById("modalDate");
-const answersContainer = document.getElementById("answersContainer");
+const totalResponses =
+    document.getElementById("totalResponses");
+
+const enoughBinsPercentage =
+    document.getElementById("enoughBinsPercentage");
+
+const cleanlinessPercentage =
+    document.getElementById("cleanlinessPercentage");
+
+const searchInput =
+    document.getElementById("searchInput");
+
+const refreshButton =
+    document.getElementById("refreshButton");
+
+const exportButton =
+    document.getElementById("exportButton");
+
+const responsesTableBody =
+    document.getElementById("responsesTableBody");
+
+const responseCount =
+    document.getElementById("responseCount");
+
+const emptyMessage =
+    document.getElementById("emptyMessage");
+
+const answersModal =
+    document.getElementById("answersModal");
+
+const closeModal =
+    document.getElementById("closeModal");
+
+const modalName =
+    document.getElementById("modalName");
+
+const modalDate =
+    document.getElementById("modalDate");
+
+const answersContainer =
+    document.getElementById("answersContainer");
 
 
-// ------------------------------------------------------------
-// QUESTIONS
-// ------------------------------------------------------------
+// ============================================================
+// THE 10 QUESTIONS
+// ============================================================
 
 const questions = {
 
-    q1: "How would you rate the current waste management on campus?",
+    q1:
+        "How would you rate the current waste management on campus?",
 
-    q2: "Do you think there are enough dustbins on campus?",
+    q2:
+        "Do you think there are enough dustbins on campus?",
 
-    q3: "Are the dustbins placed in convenient locations?",
+    q3:
+        "Are the dustbins placed in convenient locations?",
 
-    q4: "How often do you see litter around campus?",
+    q4:
+        "How often do you see litter around campus?",
 
-    q5: "What types of waste do you commonly see on campus?",
+    q5:
+        "What types of waste do you commonly see on campus?",
 
-    q6: "Which areas of campus have the most waste or litter?",
+    q6:
+        "Which areas of campus have the most waste or litter?",
 
-    q7: "Do you think the campus is cleaned regularly?",
+    q7:
+        "Do you think the campus is cleaned regularly?",
 
-    q8: "Are the dustbins emptied frequently enough?",
+    q8:
+        "Are there separate bins for different types of waste?",
 
-    q9: "Are there separate bins for different types of waste?",
+    q9:
+        "Do you think students are aware of proper waste-disposal practices?",
 
-    q10: "Do you know how to separate recyclable waste from general waste?",
+    q10:
+        "How satisfied are you with the cleanliness of the campus?"
 
-    q11: "Do you think students and staff make proper use of recycling bins?",
-
-    q12: "What prevents people from recycling on campus?",
-
-    q13: "Would you be willing to separate your waste if more recycling bins were provided?",
-
-    q14: "Do you think students are aware of proper waste-disposal practices?",
-
-    q15: "Do you think lecturers and staff set a good example when disposing of waste?",
-
-    q16: "What do you think are the main causes of littering on campus?",
-
-    q17: "Do you think people litter because there are not enough bins?",
-
-    q18: "Should the university provide more education about waste management?",
-
-    q19: "How satisfied are you with the cleanliness of the campus?",
-
-    q20: "Do you think there are enough waste bins across campus?"
 };
 
 
-// ------------------------------------------------------------
-// VARIABLES
-// ------------------------------------------------------------
+// ============================================================
+// RESPONSE STORAGE
+// ============================================================
 
 let allResponses = [];
 
 
-// ------------------------------------------------------------
-// PAGE START
-// ------------------------------------------------------------
+// ============================================================
+// PAGE INITIALIZATION
+// ============================================================
 
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener(
+    "DOMContentLoaded",
+    async () => {
 
-    const {
-        data: {
-            session
-        }
-    } = await supabaseClient.auth.getSession();
-
-
-    if (session) {
-
-        showDashboard();
-
-        await loadResponses();
-
-    } else {
-
-        showLogin();
+        await checkSession();
 
     }
-
-});
-
-
-// ------------------------------------------------------------
-// LOGIN
-// ------------------------------------------------------------
-
-loginForm.addEventListener("submit", async (event) => {
-
-    event.preventDefault();
-
-    const email = document.getElementById("email").value.trim();
-
-    const password = document.getElementById("password").value;
+);
 
 
-    loginButton.disabled = true;
+// ============================================================
+// CHECK LOGIN SESSION
+// ============================================================
 
-    loginButton.textContent = "Logging in...";
-
-    loginMessage.textContent = "";
-
+async function checkSession() {
 
     const {
         data,
         error
-    } = await supabaseClient.auth.signInWithPassword({
-        email: email,
-        password: password
-    });
+    } = await supabaseClient.auth.getSession();
 
 
     if (error) {
 
-        loginMessage.textContent =
-            "Login failed: " + error.message;
+        console.error(
+            "Session error:",
+            error
+        );
 
-        loginButton.disabled = false;
-
-        loginButton.textContent = "Login";
+        showLogin();
 
         return;
 
@@ -177,86 +172,280 @@ loginForm.addEventListener("submit", async (event) => {
 
         await loadResponses();
 
+    } else {
+
+        showLogin();
+
     }
 
-
-    loginButton.disabled = false;
-
-    loginButton.textContent = "Login";
-
-});
+}
 
 
-// ------------------------------------------------------------
+// ============================================================
+// LOGIN
+// ============================================================
+
+loginForm.addEventListener(
+    "submit",
+    async (event) => {
+
+        event.preventDefault();
+
+
+        const email =
+            document
+                .getElementById("email")
+                .value
+                .trim();
+
+
+        const password =
+            document
+                .getElementById("password")
+                .value;
+
+
+        if (!email || !password) {
+
+            loginMessage.textContent =
+                "Please enter your email and password.";
+
+            return;
+
+        }
+
+
+        loginButton.disabled = true;
+
+        loginButton.textContent =
+            "Logging in...";
+
+        loginMessage.textContent = "";
+
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient.auth.signInWithPassword({
+
+                email: email,
+
+                password: password
+
+            });
+
+
+        if (error) {
+
+            console.error(
+                "Login error:",
+                error
+            );
+
+
+            loginMessage.textContent =
+                "Login failed. Check your email and password.";
+
+
+            loginButton.disabled = false;
+
+            loginButton.textContent =
+                "Login";
+
+            return;
+
+        }
+
+
+        if (data.session) {
+
+            showDashboard();
+
+            await loadResponses();
+
+        }
+
+
+        loginButton.disabled = false;
+
+        loginButton.textContent =
+            "Login";
+
+    }
+);
+
+
+// ============================================================
 // LOGOUT
-// ------------------------------------------------------------
+// ============================================================
 
-logoutButton.addEventListener("click", async () => {
+logoutButton.addEventListener(
+    "click",
+    async () => {
 
-    await supabaseClient.auth.signOut();
+        logoutButton.disabled = true;
 
-    allResponses = [];
-
-    showLogin();
-
-});
+        logoutButton.textContent =
+            "Logging out...";
 
 
-// ------------------------------------------------------------
+        const {
+            error
+        } =
+            await supabaseClient.auth.signOut();
+
+
+        if (error) {
+
+            console.error(
+                "Logout error:",
+                error
+            );
+
+        }
+
+
+        allResponses = [];
+
+        showLogin();
+
+
+        logoutButton.disabled = false;
+
+        logoutButton.textContent =
+            "Logout";
+
+    }
+);
+
+
+// ============================================================
 // SHOW LOGIN
-// ------------------------------------------------------------
+// ============================================================
 
 function showLogin() {
 
-    loginSection.classList.remove("hidden");
+    loginSection.classList.remove(
+        "hidden"
+    );
 
-    dashboardSection.classList.add("hidden");
+    dashboardSection.classList.add(
+        "hidden"
+    );
 
 }
 
 
-// ------------------------------------------------------------
+// ============================================================
 // SHOW DASHBOARD
-// ------------------------------------------------------------
+// ============================================================
 
 function showDashboard() {
 
-    loginSection.classList.add("hidden");
+    loginSection.classList.add(
+        "hidden"
+    );
 
-    dashboardSection.classList.remove("hidden");
+    dashboardSection.classList.remove(
+        "hidden"
+    );
 
 }
 
 
-// ------------------------------------------------------------
-// LOAD RESPONSES
-// ------------------------------------------------------------
+// ============================================================
+// LOAD SURVEY RESPONSES
+// ============================================================
 
 async function loadResponses() {
 
-    responsesTableBody.innerHTML = "";
+    responseCount.textContent =
+        "Loading responses...";
 
-    responseCount.textContent = "Loading...";
+
+    responsesTableBody.innerHTML = "";
 
 
     const {
         data,
         error
-    } = await supabaseClient
-        .from("waste_management_responses")
-        .select("*")
-        .order("created_at", {
-            ascending: false
-        });
+    } =
+        await supabaseClient
+            .from(
+                "waste_management_responses"
+            )
+            .select("*")
+            .order(
+                "created_at",
+                {
+                    ascending: false
+                }
+            );
 
 
     if (error) {
 
-        console.error(error);
+        console.error(
+            "Database error:",
+            error
+        );
+
+
+        responseCount.textContent =
+            "Unable to load responses";
+
 
         alert(
-            "Could not load responses.\n\n" +
+            "Could not load survey responses.\n\n" +
             error.message
+        );
+
+
+        return;
+
+    }
+
+
+    allResponses =
+        data || [];
+
+
+    updateStatistics(
+        allResponses
+    );
+
+
+    displayResponses(
+        allResponses
+    );
+
+}
+
+
+// ============================================================
+// DISPLAY RESPONSES
+// ============================================================
+
+function displayResponses(
+    responses
+) {
+
+    responsesTableBody.innerHTML = "";
+
+
+    responseCount.textContent =
+        `${responses.length} response${
+            responses.length === 1
+                ? ""
+                : "s"
+        }`;
+
+
+    if (responses.length === 0) {
+
+        emptyMessage.classList.remove(
+            "hidden"
         );
 
         return;
@@ -264,252 +453,347 @@ async function loadResponses() {
     }
 
 
-    allResponses = data || [];
+    emptyMessage.classList.add(
+        "hidden"
+    );
 
 
-    updateStatistics(allResponses);
+    responses.forEach(
+        (response, index) => {
 
-    displayResponses(allResponses);
+            const row =
+                document.createElement(
+                    "tr"
+                );
+
+
+            // NUMBER
+
+            const numberCell =
+                document.createElement(
+                    "td"
+                );
+
+            numberCell.textContent =
+                index + 1;
+
+
+            // NAME
+
+            const nameCell =
+                document.createElement(
+                    "td"
+                );
+
+            nameCell.className =
+                "name-cell";
+
+            nameCell.textContent =
+                response.full_name ||
+                "No name";
+
+
+            // DATE
+
+            const dateCell =
+                document.createElement(
+                    "td"
+                );
+
+            dateCell.className =
+                "date-cell";
+
+            dateCell.textContent =
+                formatDate(
+                    response.created_at
+                );
+
+
+            // BUTTON
+
+            const actionCell =
+                document.createElement(
+                    "td"
+                );
+
+
+            const viewButton =
+                document.createElement(
+                    "button"
+                );
+
+
+            viewButton.className =
+                "answers-btn";
+
+            viewButton.textContent =
+                "View Answers";
+
+
+            viewButton.addEventListener(
+                "click",
+                () => {
+
+                    openAnswers(
+                        response
+                    );
+
+                }
+            );
+
+
+            actionCell.appendChild(
+                viewButton
+            );
+
+
+            // ADD CELLS
+
+            row.appendChild(
+                numberCell
+            );
+
+            row.appendChild(
+                nameCell
+            );
+
+            row.appendChild(
+                dateCell
+            );
+
+            row.appendChild(
+                actionCell
+            );
+
+
+            responsesTableBody.appendChild(
+                row
+            );
+
+        }
+    );
 
 }
 
 
-// ------------------------------------------------------------
-// DISPLAY RESPONSES
-// ------------------------------------------------------------
+// ============================================================
+// UPDATE STATISTICS
+// ============================================================
 
-function displayResponses(responses) {
+function updateStatistics(
+    responses
+) {
 
-    responsesTableBody.innerHTML = "";
-
-
-    responseCount.textContent =
-        `${responses.length} response${responses.length === 1 ? "" : "s"}`;
-
-
-    if (responses.length === 0) {
-
-        emptyMessage.classList.remove("hidden");
-
-        return;
-
-    }
+    const total =
+        responses.length;
 
 
-    emptyMessage.classList.add("hidden");
+    // TOTAL
 
-
-    responses.forEach((response, index) => {
-
-        const row = document.createElement("tr");
-
-
-        const numberCell = document.createElement("td");
-
-        numberCell.textContent = index + 1;
-
-
-        const nameCell = document.createElement("td");
-
-        nameCell.className = "name-cell";
-
-        nameCell.textContent =
-            response.full_name || "No name";
-
-
-        const dateCell = document.createElement("td");
-
-        dateCell.className = "date-cell";
-
-        dateCell.textContent =
-            formatDate(response.created_at);
-
-
-        const actionCell = document.createElement("td");
-
-        const button = document.createElement("button");
-
-        button.className = "answers-btn";
-
-        button.textContent = "View Answers";
-
-
-        button.addEventListener("click", () => {
-
-            openAnswers(response);
-
-        });
-
-
-        actionCell.appendChild(button);
-
-
-        row.appendChild(numberCell);
-
-        row.appendChild(nameCell);
-
-        row.appendChild(dateCell);
-
-        row.appendChild(actionCell);
-
-
-        responsesTableBody.appendChild(row);
-
-    });
-
-}
-
-
-// ------------------------------------------------------------
-// STATISTICS
-// ------------------------------------------------------------
-
-function updateStatistics(responses) {
-
-    const total = responses.length;
-
-
-    totalResponses.textContent = total;
+    totalResponses.textContent =
+        total;
 
 
     if (total === 0) {
 
-        enoughBinsPercentage.textContent = "0%";
+        enoughBinsPercentage.textContent =
+            "0%";
 
-        cleanlinessPercentage.textContent = "0%";
+        cleanlinessPercentage.textContent =
+            "0%";
 
         return;
 
     }
 
 
-    // Q2 - enough dustbins
+    // ========================================================
+    // Q2
+    // ========================================================
 
-    const q2Yes = responses.filter(
-        response =>
-            response.q2 === "Yes"
-    ).length;
+    const yesAnswers =
+        responses.filter(
+            response =>
+                response.q2 === "Yes"
+        ).length;
 
 
-    const q2Percentage =
-        Math.round((q2Yes / total) * 100);
+    const binsPercentage =
+        Math.round(
+            (
+                yesAnswers /
+                total
+            ) * 100
+        );
 
 
     enoughBinsPercentage.textContent =
-        q2Percentage + "%";
+        binsPercentage + "%";
 
 
-    // Q19 - satisfied or very satisfied
+    // ========================================================
+    // Q10
+    // ========================================================
 
-    const satisfied = responses.filter(
-        response =>
-            response.q19 === "Satisfied" ||
-            response.q19 === "Very satisfied"
-    ).length;
+    const satisfiedAnswers =
+        responses.filter(
+            response =>
+
+                response.q10 ===
+                    "Satisfied"
+
+                ||
+
+                response.q10 ===
+                    "Very satisfied"
+        ).length;
 
 
-    const satisfiedPercentage =
-        Math.round((satisfied / total) * 100);
+    const cleanliness =
+        Math.round(
+            (
+                satisfiedAnswers /
+                total
+            ) * 100
+        );
 
 
     cleanlinessPercentage.textContent =
-        satisfiedPercentage + "%";
+        cleanliness + "%";
 
 }
 
 
-// ------------------------------------------------------------
-// SEARCH
-// ------------------------------------------------------------
+// ============================================================
+// SEARCH BY NAME
+// ============================================================
 
-searchInput.addEventListener("input", () => {
+searchInput.addEventListener(
+    "input",
+    () => {
 
-    const searchTerm =
-        searchInput.value
-            .trim()
-            .toLowerCase();
+        const searchTerm =
+            searchInput.value
+                .trim()
+                .toLowerCase();
 
 
-    if (!searchTerm) {
+        if (!searchTerm) {
 
-        displayResponses(allResponses);
+            displayResponses(
+                allResponses
+            );
 
-        return;
+            return;
+
+        }
+
+
+        const filtered =
+            allResponses.filter(
+                response => {
+
+                    const name =
+                        response.full_name ||
+                        "";
+
+
+                    return name
+                        .toLowerCase()
+                        .includes(
+                            searchTerm
+                        );
+
+                }
+            );
+
+
+        displayResponses(
+            filtered
+        );
 
     }
+);
 
 
-    const filteredResponses =
-        allResponses.filter(response => {
-
-            const name =
-                response.full_name || "";
-
-
-            return name
-                .toLowerCase()
-                .includes(searchTerm);
-
-        });
-
-
-    displayResponses(filteredResponses);
-
-});
-
-
-// ------------------------------------------------------------
+// ============================================================
 // REFRESH
-// ------------------------------------------------------------
+// ============================================================
 
-refreshButton.addEventListener("click", async () => {
+refreshButton.addEventListener(
+    "click",
+    async () => {
 
-    refreshButton.disabled = true;
+        refreshButton.disabled = true;
 
-    refreshButton.textContent = "Refreshing...";
-
-
-    await loadResponses();
-
-
-    refreshButton.disabled = false;
-
-    refreshButton.textContent = "Refresh";
-
-});
+        refreshButton.textContent =
+            "Refreshing...";
 
 
-// ------------------------------------------------------------
-// OPEN ANSWERS
-// ------------------------------------------------------------
+        await loadResponses();
 
-function openAnswers(response) {
+
+        refreshButton.disabled = false;
+
+        refreshButton.textContent =
+            "Refresh";
+
+    }
+);
+
+
+// ============================================================
+// OPEN RESPONSE
+// ============================================================
+
+function openAnswers(
+    response
+) {
 
     modalName.textContent =
-        response.full_name || "Unnamed Response";
+        response.full_name ||
+        "Unnamed Response";
 
 
     modalDate.textContent =
         "Submitted: " +
-        formatDate(response.created_at);
+        formatDate(
+            response.created_at
+        );
 
 
     answersContainer.innerHTML = "";
 
 
-    for (let i = 1; i <= 20; i++) {
+    for (
+        let i = 1;
+        i <= 10;
+        i++
+    ) {
 
-        const key = "q" + i;
+        const key =
+            "q" + i;
 
-        let answer = response[key];
+
+        let answer =
+            response[key];
 
 
-        if (Array.isArray(answer)) {
+        // ARRAY ANSWERS
 
-            answer = answer.join(", ");
+        if (
+            Array.isArray(answer)
+        ) {
+
+            answer =
+                answer.join(
+                    ", "
+                );
 
         }
 
+
+        // EMPTY ANSWER
 
         if (
             answer === null ||
@@ -517,40 +801,59 @@ function openAnswers(response) {
             answer === ""
         ) {
 
-            answer = "No answer";
+            answer =
+                "No answer";
 
         }
 
 
+        // ANSWER CONTAINER
+
         const answerDiv =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
+
+        answerDiv.className =
+            "answer";
 
 
-        answerDiv.className = "answer";
-
+        // QUESTION
 
         const question =
-            document.createElement("strong");
+            document.createElement(
+                "strong"
+            );
 
 
         question.textContent =
-            i + ". " + questions[key];
+            `${i}. ${questions[key]}`;
 
+
+        // ANSWER TEXT
 
         const answerText =
-            document.createElement("span");
+            document.createElement(
+                "span"
+            );
 
 
         answerText.textContent =
             answer;
 
 
-        answerDiv.appendChild(question);
+        answerDiv.appendChild(
+            question
+        );
 
-        answerDiv.appendChild(answerText);
+        answerDiv.appendChild(
+            answerText
+        );
 
 
-        answersContainer.appendChild(answerDiv);
+        answersContainer.appendChild(
+            answerDiv
+        );
 
 
         // OTHER ANSWERS
@@ -574,39 +877,24 @@ function openAnswers(response) {
 
         }
 
-
-        if (key === "q12") {
-
-            addOtherAnswer(
-                response.q12_other,
-                "Other recycling barrier"
-            );
-
-        }
-
-
-        if (key === "q16") {
-
-            addOtherAnswer(
-                response.q16_other,
-                "Other cause of littering"
-            );
-
-        }
-
     }
 
 
-    answersModal.classList.remove("hidden");
+    answersModal.classList.remove(
+        "hidden"
+    );
 
 }
 
 
-// ------------------------------------------------------------
-// ADD OTHER ANSWER
-// ------------------------------------------------------------
+// ============================================================
+// OTHER ANSWER
+// ============================================================
 
-function addOtherAnswer(value, label) {
+function addOtherAnswer(
+    value,
+    label
+) {
 
     if (!value) {
 
@@ -616,63 +904,93 @@ function addOtherAnswer(value, label) {
 
 
     const div =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
 
-    div.className = "answer";
+    div.className =
+        "answer";
 
 
     const strong =
-        document.createElement("strong");
+        document.createElement(
+            "strong"
+        );
 
 
-    strong.textContent = label;
+    strong.textContent =
+        label;
 
 
     const span =
-        document.createElement("span");
+        document.createElement(
+            "span"
+        );
 
 
-    span.textContent = value;
+    span.textContent =
+        value;
 
 
-    div.appendChild(strong);
+    div.appendChild(
+        strong
+    );
 
-    div.appendChild(span);
+    div.appendChild(
+        span
+    );
 
 
-    answersContainer.appendChild(div);
+    answersContainer.appendChild(
+        div
+    );
 
 }
 
 
-// ------------------------------------------------------------
+// ============================================================
 // CLOSE MODAL
-// ------------------------------------------------------------
+// ============================================================
 
-closeModal.addEventListener("click", () => {
+closeModal.addEventListener(
+    "click",
+    () => {
 
-    answersModal.classList.add("hidden");
-
-});
-
-
-answersModal.addEventListener("click", (event) => {
-
-    if (event.target === answersModal) {
-
-        answersModal.classList.add("hidden");
+        answersModal.classList.add(
+            "hidden"
+        );
 
     }
+);
 
-});
+
+answersModal.addEventListener(
+    "click",
+    event => {
+
+        if (
+            event.target ===
+            answersModal
+        ) {
+
+            answersModal.classList.add(
+                "hidden"
+            );
+
+        }
+
+    }
+);
 
 
-// ------------------------------------------------------------
-// FORMAT DATE
-// ------------------------------------------------------------
+// ============================================================
+// DATE FORMAT
+// ============================================================
 
-function formatDate(dateString) {
+function formatDate(
+    dateString
+) {
 
     if (!dateString) {
 
@@ -682,7 +1000,9 @@ function formatDate(dateString) {
 
 
     const date =
-        new Date(dateString);
+        new Date(
+            dateString
+        );
 
 
     return date.toLocaleString(
@@ -696,169 +1016,186 @@ function formatDate(dateString) {
 }
 
 
-// ------------------------------------------------------------
-// CSV EXPORT
-// ------------------------------------------------------------
+// ============================================================
+// EXPORT CSV
+// ============================================================
 
-exportButton.addEventListener("click", () => {
+exportButton.addEventListener(
+    "click",
+    () => {
 
-    if (allResponses.length === 0) {
+        if (
+            allResponses.length === 0
+        ) {
 
-        alert("There are no responses to export.");
+            alert(
+                "There are no responses to export."
+            );
 
-        return;
+            return;
 
-    }
-
-
-    const headers = [
-
-        "Full Name",
-
-        "Date",
-
-        "Q1",
-        "Q2",
-        "Q3",
-        "Q4",
-        "Q5",
-        "Q5 Other",
-        "Q6",
-        "Q6 Other",
-        "Q7",
-        "Q8",
-        "Q9",
-        "Q10",
-        "Q11",
-        "Q12",
-        "Q12 Other",
-        "Q13",
-        "Q14",
-        "Q15",
-        "Q16",
-        "Q16 Other",
-        "Q17",
-        "Q18",
-        "Q19",
-        "Q20"
-
-    ];
+        }
 
 
-    const rows = allResponses.map(response => [
+        const headers = [
 
-        response.full_name,
+            "Full Name",
 
-        response.created_at,
+            "Date",
 
-        response.q1,
+            "Q1",
 
-        response.q2,
+            "Q2",
 
-        response.q3,
+            "Q3",
 
-        response.q4,
+            "Q4",
 
-        formatArray(response.q5),
+            "Q5",
 
-        response.q5_other,
+            "Q5 Other",
 
-        response.q6,
+            "Q6",
 
-        response.q6_other,
+            "Q6 Other",
 
-        response.q7,
+            "Q7",
 
-        response.q8,
+            "Q8",
 
-        response.q9,
+            "Q9",
 
-        response.q10,
+            "Q10"
 
-        response.q11,
-
-        formatArray(response.q12),
-
-        response.q12_other,
-
-        response.q13,
-
-        response.q14,
-
-        response.q15,
-
-        formatArray(response.q16),
-
-        response.q16_other,
-
-        response.q17,
-
-        response.q18,
-
-        response.q19,
-
-        response.q20
-
-    ]);
+        ];
 
 
-    let csv =
-        headers.map(csvEscape).join(",") +
-        "\n";
+        const rows =
+            allResponses.map(
+                response => [
+
+                    response.full_name,
+
+                    response.created_at,
+
+                    response.q1,
+
+                    response.q2,
+
+                    response.q3,
+
+                    response.q4,
+
+                    formatArray(
+                        response.q5
+                    ),
+
+                    response.q5_other,
+
+                    response.q6,
+
+                    response.q6_other,
+
+                    response.q7,
+
+                    response.q8,
+
+                    response.q9,
+
+                    response.q10
+
+                ]
+            );
 
 
-    rows.forEach(row => {
-
-        csv +=
-            row.map(csvEscape).join(",") +
+        let csv =
+            headers
+                .map(csvEscape)
+                .join(",") +
             "\n";
 
-    });
 
+        rows.forEach(
+            row => {
 
-    const blob =
-        new Blob(
-            [csv],
-            {
-                type: "text/csv;charset=utf-8;"
+                csv +=
+                    row
+                        .map(csvEscape)
+                        .join(",") +
+                    "\n";
+
             }
         );
 
 
-    const url =
-        URL.createObjectURL(blob);
+        // CREATE FILE
+
+        const blob =
+            new Blob(
+                [csv],
+                {
+                    type:
+                        "text/csv;charset=utf-8;"
+                }
+            );
 
 
-    const link =
-        document.createElement("a");
+        const url =
+            URL.createObjectURL(
+                blob
+            );
 
 
-    link.href = url;
-
-    link.download =
-        "waste-management-survey-responses.csv";
-
-
-    document.body.appendChild(link);
-
-    link.click();
-
-    document.body.removeChild(link);
-
-    URL.revokeObjectURL(url);
-
-});
+        const link =
+            document.createElement(
+                "a"
+            );
 
 
-// ------------------------------------------------------------
-// FORMAT ARRAY
-// ------------------------------------------------------------
+        link.href =
+            url;
 
-function formatArray(value) {
 
-    if (Array.isArray(value)) {
+        link.download =
+            "ecopulse-campus-waste-survey.csv";
 
-        return value.join("; ");
+
+        document.body.appendChild(
+            link
+        );
+
+
+        link.click();
+
+
+        document.body.removeChild(
+            link
+        );
+
+
+        URL.revokeObjectURL(
+            url
+        );
+
+    }
+);
+
+
+// ============================================================
+// ARRAY FORMAT
+// ============================================================
+
+function formatArray(
+    value
+) {
+
+    if (
+        Array.isArray(value)
+    ) {
+
+        return value.join(
+            "; "
+        );
 
     }
 
@@ -868,11 +1205,13 @@ function formatArray(value) {
 }
 
 
-// ------------------------------------------------------------
+// ============================================================
 // CSV ESCAPE
-// ------------------------------------------------------------
+// ============================================================
 
-function csvEscape(value) {
+function csvEscape(
+    value
+) {
 
     if (
         value === null ||
@@ -886,7 +1225,10 @@ function csvEscape(value) {
 
     const text =
         String(value)
-            .replace(/"/g, '""');
+            .replace(
+                /"/g,
+                '""'
+            );
 
 
     return `"${text}"`;
