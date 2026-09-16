@@ -40,11 +40,11 @@ const logoutButton =
 const totalResponses =
     document.getElementById("totalResponses");
 
-const enoughBinsPercentage =
-    document.getElementById("enoughBinsPercentage");
+const poorRatingPercentage =
+    document.getElementById("poorRatingPercentage");
 
-const cleanlinessPercentage =
-    document.getElementById("cleanlinessPercentage");
+const educationAgreePercentage =
+    document.getElementById("educationAgreePercentage");
 
 const searchInput =
     document.getElementById("searchInput");
@@ -81,7 +81,7 @@ const answersContainer =
 
 
 // ============================================================
-// THE 10 QUESTIONS
+// THE 5 QUESTIONS
 // ============================================================
 
 const questions = {
@@ -89,34 +89,30 @@ const questions = {
     q1:
         "How would you rate the current waste management on campus?",
 
-    q2:
-        "Do you think there are enough dustbins on campus?",
-
-    q3:
-        "Are the dustbins placed in convenient locations?",
-
     q4:
         "How often do you see litter around campus?",
 
-    q5:
-        "What types of waste do you commonly see on campus?",
+    q12:
+        "What prevents people from recycling on campus?",
 
-    q6:
-        "Which areas of campus have the most waste or litter?",
+    q16:
+        "What do you think are the main causes of littering on campus?",
 
-    q7:
-        "Do you think the campus is cleaned regularly?",
-
-    q8:
-        "Are there separate bins for different types of waste?",
-
-    q9:
-        "Do you think students are aware of proper waste-disposal practices?",
-
-    q10:
-        "How satisfied are you with the cleanliness of the campus?"
+    q18:
+        "Should the university provide more education about waste management?"
 
 };
+
+
+// Order the questions are shown in (modal + CSV)
+
+const questionOrder = [
+    "q1",
+    "q4",
+    "q12",
+    "q16",
+    "q18"
+];
 
 
 // ============================================================
@@ -373,7 +369,7 @@ async function loadResponses() {
     } =
         await supabaseClient
             .from(
-                "waste_management_responses"
+                TABLE_NAME
             )
             .select("*")
             .order(
@@ -596,10 +592,10 @@ function updateStatistics(
 
     if (total === 0) {
 
-        enoughBinsPercentage.textContent =
+        poorRatingPercentage.textContent =
             "0%";
 
-        cleanlinessPercentage.textContent =
+        educationAgreePercentage.textContent =
             "0%";
 
         return;
@@ -608,58 +604,65 @@ function updateStatistics(
 
 
     // ========================================================
-    // Q2
+    // Q1 — rated waste management poorly
     // ========================================================
 
-    const yesAnswers =
-        responses.filter(
-            response =>
-                response.q2 === "Yes"
-        ).length;
-
-
-    const binsPercentage =
-        Math.round(
-            (
-                yesAnswers /
-                total
-            ) * 100
-        );
-
-
-    enoughBinsPercentage.textContent =
-        binsPercentage + "%";
-
-
-    // ========================================================
-    // Q10
-    // ========================================================
-
-    const satisfiedAnswers =
+    const poorAnswers =
         responses.filter(
             response =>
 
-                response.q10 ===
-                    "Satisfied"
+                response.q1 ===
+                    "Poor"
 
                 ||
 
-                response.q10 ===
-                    "Very satisfied"
+                response.q1 ===
+                    "Very poor"
         ).length;
 
 
-    const cleanliness =
+    const poorPercentage =
         Math.round(
             (
-                satisfiedAnswers /
+                poorAnswers /
                 total
             ) * 100
         );
 
 
-    cleanlinessPercentage.textContent =
-        cleanliness + "%";
+    poorRatingPercentage.textContent =
+        poorPercentage + "%";
+
+
+    // ========================================================
+    // Q18 — wants more education
+    // ========================================================
+
+    const agreeAnswers =
+        responses.filter(
+            response =>
+
+                response.q18 ===
+                    "Agree"
+
+                ||
+
+                response.q18 ===
+                    "Strongly agree"
+        ).length;
+
+
+    const agreePercentage =
+        Math.round(
+            (
+                agreeAnswers /
+                total
+            ) * 100
+        );
+
+
+    educationAgreePercentage.textContent =
+        agreePercentage + "%";
 
 }
 
@@ -765,119 +768,113 @@ function openAnswers(
     answersContainer.innerHTML = "";
 
 
-    for (
-        let i = 1;
-        i <= 10;
-        i++
-    ) {
+    questionOrder.forEach(
+        (key, index) => {
 
-        const key =
-            "q" + i;
+            let answer =
+                response[key];
 
 
-        let answer =
-            response[key];
+            // ARRAY ANSWERS
+
+            if (
+                Array.isArray(answer)
+            ) {
+
+                answer =
+                    answer.join(
+                        ", "
+                    );
+
+            }
 
 
-        // ARRAY ANSWERS
+            // EMPTY ANSWER
 
-        if (
-            Array.isArray(answer)
-        ) {
+            if (
+                answer === null ||
+                answer === undefined ||
+                answer === ""
+            ) {
 
-            answer =
-                answer.join(
-                    ", "
+                answer =
+                    "No answer";
+
+            }
+
+
+            // ANSWER CONTAINER
+
+            const answerDiv =
+                document.createElement(
+                    "div"
                 );
 
-        }
+            answerDiv.className =
+                "answer";
 
 
-        // EMPTY ANSWER
+            // QUESTION
 
-        if (
-            answer === null ||
-            answer === undefined ||
-            answer === ""
-        ) {
-
-            answer =
-                "No answer";
-
-        }
+            const question =
+                document.createElement(
+                    "strong"
+                );
 
 
-        // ANSWER CONTAINER
+            question.textContent =
+                `${index + 1}. ${questions[key]}`;
 
-        const answerDiv =
-            document.createElement(
-                "div"
+
+            // ANSWER TEXT
+
+            const answerText =
+                document.createElement(
+                    "span"
+                );
+
+
+            answerText.textContent =
+                answer;
+
+
+            answerDiv.appendChild(
+                question
             );
 
-        answerDiv.className =
-            "answer";
-
-
-        // QUESTION
-
-        const question =
-            document.createElement(
-                "strong"
-            );
-
-
-        question.textContent =
-            `${i}. ${questions[key]}`;
-
-
-        // ANSWER TEXT
-
-        const answerText =
-            document.createElement(
-                "span"
+            answerDiv.appendChild(
+                answerText
             );
 
 
-        answerText.textContent =
-            answer;
-
-
-        answerDiv.appendChild(
-            question
-        );
-
-        answerDiv.appendChild(
-            answerText
-        );
-
-
-        answersContainer.appendChild(
-            answerDiv
-        );
-
-
-        // OTHER ANSWERS
-
-        if (key === "q5") {
-
-            addOtherAnswer(
-                response.q5_other,
-                "Other waste type"
+            answersContainer.appendChild(
+                answerDiv
             );
+
+
+            // OTHER ANSWERS
+
+            if (key === "q12") {
+
+                addOtherAnswer(
+                    response.q12_other,
+                    "Other recycling barrier"
+                );
+
+            }
+
+
+            if (key === "q16") {
+
+                addOtherAnswer(
+                    response.q16_other,
+                    "Other littering cause"
+                );
+
+            }
 
         }
-
-
-        if (key === "q6") {
-
-            addOtherAnswer(
-                response.q6_other,
-                "Other campus area"
-            );
-
-        }
-
-    }
+    );
 
 
     answersModal.classList.remove(
@@ -1045,27 +1042,17 @@ exportButton.addEventListener(
 
             "Q1",
 
-            "Q2",
-
-            "Q3",
-
             "Q4",
 
-            "Q5",
+            "Q12",
 
-            "Q5 Other",
+            "Q12 Other",
 
-            "Q6",
+            "Q16",
 
-            "Q6 Other",
+            "Q16 Other",
 
-            "Q7",
-
-            "Q8",
-
-            "Q9",
-
-            "Q10"
+            "Q18"
 
         ];
 
@@ -1080,29 +1067,21 @@ exportButton.addEventListener(
 
                     response.q1,
 
-                    response.q2,
-
-                    response.q3,
-
                     response.q4,
 
                     formatArray(
-                        response.q5
+                        response.q12
                     ),
 
-                    response.q5_other,
+                    response.q12_other,
 
-                    response.q6,
+                    formatArray(
+                        response.q16
+                    ),
 
-                    response.q6_other,
+                    response.q16_other,
 
-                    response.q7,
-
-                    response.q8,
-
-                    response.q9,
-
-                    response.q10
+                    response.q18
 
                 ]
             );
