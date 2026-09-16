@@ -10,12 +10,7 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>EcoPulse | Campus Waste Survey</title>
-
-    <meta
-        name="description"
-        content="Campus Waste Management Survey"
-    >
+    <title>EcoPulse | Admin Dashboard</title>
 
     <link rel="stylesheet" href="styles.css">
 
@@ -25,22 +20,18 @@
 
     <script src="config.js" defer></script>
 
-    <script src="app.js" defer></script>
+    <script src="admin.js" defer></script>
 
 </head>
 
 
 <body>
 
-    <!-- BACKGROUND EFFECTS -->
-
     <div class="background-grid"></div>
 
     <div class="glow glow-one"></div>
 
     <div class="glow glow-two"></div>
-
-    <div class="glow glow-three"></div>
 
 
     <!-- HEADER -->
@@ -60,7 +51,7 @@
                     <h1>EcoPulse</h1>
 
                     <span>
-                        CAMPUS ENVIRONMENT SYSTEM
+                        ADMIN DASHBOARD
                     </span>
 
                 </div>
@@ -68,11 +59,8 @@
             </div>
 
 
-            <a
-                href="admin.html"
-                class="admin-link"
-            >
-                Admin
+            <a href="index.html" class="admin-link">
+                Back to survey
             </a>
 
         </div>
@@ -80,537 +68,162 @@
     </header>
 
 
-    <!-- MAIN -->
-
     <main class="main-container">
 
 
-        <!-- HERO -->
+        <!-- LOGIN -->
 
-        <section class="hero">
+        <section id="loginSection" class="login-wrap">
 
-            <div class="status-badge">
+            <div class="login-card">
 
-                <span class="status-dot"></span>
+                <div class="status-badge">
+                    <span class="status-dot"></span>
+                    RESTRICTED ACCESS
+                </div>
 
-                LIVE ENVIRONMENTAL SURVEY
+                <h2>Admin Login</h2>
 
-            </div>
+                <p>Sign in to view survey responses.</p>
 
+                <form id="loginForm">
 
-            <h2>
+                    <label for="email">Email</label>
 
-                Help us build a
-                <span>cleaner campus.</span>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="you@example.com"
+                        required
+                    >
 
-            </h2>
+                    <label for="password">Password</label>
 
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="••••••••"
+                        required
+                    >
 
-            <p>
+                    <button type="submit" id="loginButton">
+                        Login
+                    </button>
 
-                Five short questions on waste, recycling
-                and cleanliness across campus.
+                    <p id="loginMessage"></p>
 
-            </p>
-
-
-            <div class="progress-intro">
-
-                <span>
-                    5 QUESTIONS
-                </span>
-
-                <span>
-                    ~90 SECONDS
-                </span>
+                </form>
 
             </div>
 
         </section>
 
 
-        <!-- SURVEY -->
+        <!-- DASHBOARD -->
 
-        <form id="surveyForm">
+        <section id="dashboardSection" class="hidden">
 
+            <div class="dashboard-topbar">
 
-            <!-- PERSONAL INFORMATION -->
+                <h2>Survey Responses</h2>
 
-            <section class="survey-card">
-
-                <div class="section-heading">
-
-                    <span class="section-number">
-                        01
-                    </span>
-
-                    <div>
-
-                        <h3>
-                            About you
-                        </h3>
-
-                        <p>
-                            Let's start with your name.
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <div class="question">
-
-                    <label for="fullName">
-
-                        Full Name
-
-                        <span class="required">*</span>
-
-                    </label>
-
-
-                    <input
-                        type="text"
-                        id="fullName"
-                        name="fullName"
-                        placeholder="Enter your full name"
-                        required
-                        minlength="2"
-                    >
-
-                </div>
-
-            </section>
-
-
-            <!-- QUESTIONS -->
-
-            <section class="survey-card">
-
-                <div class="section-heading">
-
-                    <span class="section-number">
-                        02
-                    </span>
-
-                    <div>
-
-                        <h3>
-                            Campus Waste
-                        </h3>
-
-                        <p>
-                            Tell us what you see around campus.
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <!-- Q1 -->
-
-                <div class="question">
-
-                    <label>
-
-                        1. How would you rate the current
-                        waste management on campus?
-
-                        <span class="required">*</span>
-
-                    </label>
-
-
-                    <div class="options">
-
-                        <label class="option">
-                            <input type="radio" name="q1"
-                                   value="Very poor" required>
-                            <span>Very poor</span>
-                        </label>
-
-                        <label class="option">
-                            <input type="radio" name="q1"
-                                   value="Poor">
-                            <span>Poor</span>
-                        </label>
-
-                        <label class="option">
-                            <input type="radio" name="q1"
-                                   value="Average">
-                            <span>Average</span>
-                        </label>
-
-                        <label class="option">
-                            <input type="radio" name="q1"
-                                   value="Good">
-                            <span>Good</span>
-                        </label>
-
-                        <label class="option">
-                            <input type="radio" name="q1"
-                                   value="Very good">
-                            <span>Very good</span>
-                        </label>
-
-                    </div>
-
-                </div>
-
-
-                <!-- Q2  (original Q4) -->
-
-                <div class="question">
-
-                    <label>
-
-                        2. How often do you see litter
-                        around campus?
-
-                        <span class="required">*</span>
-
-                    </label>
-
-
-                    <div class="options">
-
-                        <label class="option">
-                            <input type="radio" name="q4"
-                                   value="Never" required>
-                            <span>Never</span>
-                        </label>
-
-                        <label class="option">
-                            <input type="radio" name="q4"
-                                   value="Rarely">
-                            <span>Rarely</span>
-                        </label>
-
-                        <label class="option">
-                            <input type="radio" name="q4"
-                                   value="Sometimes">
-                            <span>Sometimes</span>
-                        </label>
-
-                        <label class="option">
-                            <input type="radio" name="q4"
-                                   value="Often">
-                            <span>Often</span>
-                        </label>
-
-                        <label class="option">
-                            <input type="radio" name="q4"
-                                   value="Very often">
-                            <span>Very often</span>
-                        </label>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-
-            <!-- RECYCLING + BEHAVIOUR -->
-
-            <section class="survey-card">
-
-                <div class="section-heading">
-
-                    <span class="section-number">
-                        03
-                    </span>
-
-                    <div>
-
-                        <h3>
-                            Recycling &amp; Behaviour
-                        </h3>
-
-                        <p>
-                            What's holding the campus back?
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <!-- Q3  (original Q12) -->
-
-                <div class="question">
-
-                    <label>
-
-                        3. What prevents people from
-                        recycling on campus?
-
-                        <span class="required">*</span>
-
-                    </label>
-
-
-                    <p class="hint">
-                        Select all that apply.
-                    </p>
-
-
-                    <div class="options checkbox-options">
-
-                        <label class="option">
-                            <input type="checkbox" name="q12"
-                                   value="Not enough recycling bins">
-                            <span>Not enough recycling bins</span>
-                        </label>
-
-                        <label class="option">
-                            <input type="checkbox" name="q12"
-                                   value="Recycling bins are difficult to find">
-                            <span>Recycling bins are difficult to find</span>
-                        </label>
-
-                        <label class="option">
-                            <input type="checkbox" name="q12"
-                                   value="Lack of knowledge about recycling">
-                            <span>Lack of knowledge about recycling</span>
-                        </label>
-
-                        <label class="option">
-                            <input type="checkbox" name="q12"
-                                   value="Lack of interest">
-                            <span>Lack of interest</span>
-                        </label>
-
-                        <label class="option">
-                            <input type="checkbox" name="q12"
-                                   value="Recycling bins are not clearly labelled">
-                            <span>Recycling bins are not clearly labelled</span>
-                        </label>
-
-                        <label class="option">
-                            <input type="checkbox" name="q12"
-                                   value="People are not encouraged to recycle">
-                            <span>People are not encouraged to recycle</span>
-                        </label>
-
-                        <label class="option">
-                            <input type="checkbox" name="q12"
-                                   value="Nothing prevents recycling">
-                            <span>Nothing prevents recycling</span>
-                        </label>
-
-                    </div>
-
-
-                    <input
-                        type="text"
-                        id="q12_other"
-                        name="q12_other"
-                        class="other-input"
-                        placeholder="Other reason..."
-                    >
-
-                </div>
-
-
-                <!-- Q4  (original Q16) -->
-
-                <div class="question">
-
-                    <label>
-
-                        4. What are the main causes of
-                        littering on campus?
-
-                        <span class="required">*</span>
-
-                    </label>
-
-
-                    <p class="hint">
-                        Select all that apply.
-                    </p>
-
-
-                    <div class="options checkbox-options">
-
-                        <label class="option">
-                            <input type="checkbox" name="q16"
-                                   value="Lack of enough dustbins">
-                            <span>Lack of enough dustbins</span>
-                        </label>
-
-                        <label class="option">
-                            <input type="checkbox" name="q16"
-                                   value="Dustbins are not conveniently located">
-                            <span>Dustbins are not conveniently located</span>
-                        </label>
-
-                        <label class="option">
-                            <input type="checkbox" name="q16"
-                                   value="People do not dispose of waste properly">
-                            <span>People do not dispose of waste properly</span>
-                        </label>
-
-                        <label class="option">
-                            <input type="checkbox" name="q16"
-                                   value="Lack of awareness">
-                            <span>Lack of awareness</span>
-                        </label>
-
-                        <label class="option">
-                            <input type="checkbox" name="q16"
-                                   value="Dustbins are often full">
-                            <span>Dustbins are often full</span>
-                        </label>
-
-                        <label class="option">
-                            <input type="checkbox" name="q16"
-                                   value="Lack of regular cleaning">
-                            <span>Lack of regular cleaning</span>
-                        </label>
-
-                    </div>
-
-
-                    <input
-                        type="text"
-                        id="q16_other"
-                        name="q16_other"
-                        class="other-input"
-                        placeholder="Other cause..."
-                    >
-
-                </div>
-
-
-                <!-- Q5  (original Q18) -->
-
-                <div class="question">
-
-                    <label>
-
-                        5. Should the university provide more
-                        education about waste management?
-
-                        <span class="required">*</span>
-
-                    </label>
-
-
-                    <div class="options">
-
-                        <label class="option">
-                            <input type="radio" name="q18"
-                                   value="Strongly agree" required>
-                            <span>Strongly agree</span>
-                        </label>
-
-                        <label class="option">
-                            <input type="radio" name="q18"
-                                   value="Agree">
-                            <span>Agree</span>
-                        </label>
-
-                        <label class="option">
-                            <input type="radio" name="q18"
-                                   value="Neutral">
-                            <span>Neutral</span>
-                        </label>
-
-                        <label class="option">
-                            <input type="radio" name="q18"
-                                   value="Disagree">
-                            <span>Disagree</span>
-                        </label>
-
-                        <label class="option">
-                            <input type="radio" name="q18"
-                                   value="Strongly disagree">
-                            <span>Strongly disagree</span>
-                        </label>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-
-            <!-- SUBMIT -->
-
-            <section class="submit-card">
-
-                <div class="submit-icon">
-                    &#9851;
-                </div>
-
-                <h3>
-                    Your voice matters.
-                </h3>
-
-                <p>
-                    Every response helps us understand
-                    how to improve waste management on campus.
-                </p>
-
-
-                <button
-                    type="submit"
-                    id="submitButton"
-                >
-                    <span>
-                        Submit Survey
-                    </span>
-
-                    <strong>
-                        &rarr;
-                    </strong>
-
+                <button id="logoutButton">
+                    Logout
                 </button>
 
-
-                <p id="statusMessage"></p>
-
-            </section>
-
-
-        </form>
-
-
-        <!-- SUCCESS -->
-
-        <section
-            id="successMessage"
-            class="success-card hidden"
-        >
-
-            <div class="success-icon">
-                &#10003;
             </div>
 
-            <div class="status-badge">
-                RESPONSE RECORDED
+
+            <div class="stats-grid">
+
+                <div class="stat-card">
+                    <span>Total Responses</span>
+                    <strong id="totalResponses">0</strong>
+                </div>
+
+                <div class="stat-card">
+                    <span>Rated Waste Mgmt Poorly</span>
+                    <strong id="poorRatingPercentage">0%</strong>
+                </div>
+
+                <div class="stat-card">
+                    <span>Want More Education</span>
+                    <strong id="educationAgreePercentage">0%</strong>
+                </div>
+
             </div>
 
-            <h2>
-                Thank you for helping
-                <span>the planet.</span>
-            </h2>
 
-            <p>
-                Your response has been securely recorded.
-            </p>
+            <div class="table-tools">
 
-            <button
-                onclick="location.reload()"
-            >
-                Submit Another Response
-            </button>
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Search by name..."
+                >
+
+                <button id="refreshButton">
+                    Refresh
+                </button>
+
+                <button id="exportButton">
+                    Export CSV
+                </button>
+
+            </div>
+
+
+            <div class="table-card">
+
+                <span id="responseCount"></span>
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Date</th>
+                            <th>Answers</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="responsesTableBody"></tbody>
+
+                </table>
+
+                <p id="emptyMessage" class="hidden">
+                    No responses yet.
+                </p>
+
+            </div>
 
         </section>
+
+
+        <!-- ANSWERS MODAL -->
+
+        <div id="answersModal" class="modal-overlay hidden">
+
+            <div class="modal-box">
+
+                <button id="closeModal">
+                    &times;
+                </button>
+
+                <h3 id="modalName"></h3>
+
+                <span id="modalDate"></span>
+
+                <div id="answersContainer"></div>
+
+            </div>
+
+        </div>
 
 
     </main>
