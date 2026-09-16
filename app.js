@@ -224,7 +224,7 @@ surveyForm.addEventListener("submit", async (event) => {
 
 
         showError(
-            "Something went wrong while submitting your response. Please try again."
+            "Could not submit: " + error.message
         );
 
 
