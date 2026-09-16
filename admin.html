@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -8,1586 +10,624 @@
         content="width=device-width, initial-scale=1.0"
     >
 
+    <title>EcoPulse | Campus Waste Survey</title>
+
     <meta
-        name="theme-color"
-        content="#071c15"
+        name="description"
+        content="Campus Waste Management Survey"
     >
 
-    <title>EcoPulse | Admin Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
 
-    <style>
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+    </script>
 
-        /* =====================================================
-           RESET
-        ===================================================== */
+    <script src="config.js" defer></script>
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+    <script src="app.js" defer></script>
 
-
-        /* =====================================================
-           ROOT
-        ===================================================== */
-
-        :root {
-            --forest: #123c2b;
-            --deep-green: #071c15;
-            --green: #1f8f5f;
-            --emerald: #35c982;
-            --lime: #a8e063;
-
-            --background: #f2f8f4;
-            --white: #ffffff;
-
-            --text: #17342a;
-            --muted: #6c8178;
-
-            --border: #dcebe2;
-
-            --danger: #d9534f;
-
-            --shadow:
-                0 20px 60px rgba(7, 28, 21, 0.10);
-        }
-
-
-        /* =====================================================
-           BODY
-        ===================================================== */
-
-        body {
-            font-family:
-                -apple-system,
-                BlinkMacSystemFont,
-                "Segoe UI",
-                Roboto,
-                Arial,
-                sans-serif;
-
-            background:
-                radial-gradient(
-                    circle at top left,
-                    rgba(53, 201, 130, 0.12),
-                    transparent 30%
-                ),
-
-                radial-gradient(
-                    circle at bottom right,
-                    rgba(168, 224, 99, 0.12),
-                    transparent 30%
-                ),
-
-                var(--background);
-
-            color: var(--text);
-
-            min-height: 100vh;
-        }
-
-
-        button,
-        input {
-            font-family: inherit;
-        }
-
-
-        button {
-            cursor: pointer;
-        }
-
-
-        /* =====================================================
-           UTILITY
-        ===================================================== */
-
-        .hidden {
-            display: none !important;
-        }
-
-
-        /* =====================================================
-           LOGIN
-        ===================================================== */
-
-        #loginSection {
-            min-height: 100vh;
-
-            display: flex;
-
-            align-items: center;
-            justify-content: center;
-
-            padding: 24px;
-        }
-
-
-        .login-wrapper {
-            width: 100%;
-            max-width: 430px;
-        }
-
-
-        .login-card {
-            background: rgba(255, 255, 255, 0.92);
-
-            border: 1px solid var(--border);
-
-            border-radius: 28px;
-
-            padding: 42px 36px;
-
-            box-shadow: var(--shadow);
-
-            backdrop-filter: blur(18px);
-
-            text-align: center;
-        }
-
-
-        .login-logo {
-            width: 76px;
-            height: 76px;
-
-            margin: 0 auto 20px;
-
-            border-radius: 24px;
-
-            display: flex;
-
-            align-items: center;
-            justify-content: center;
-
-            font-size: 38px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    var(--deep-green),
-                    var(--green)
-                );
-
-            color: white;
-
-            box-shadow:
-                0 12px 35px rgba(31, 143, 95, 0.25);
-        }
-
-
-        .login-card h1 {
-            color: var(--deep-green);
-
-            font-size: 30px;
-
-            margin-bottom: 8px;
-        }
-
-
-        .login-card .subtitle {
-            color: var(--muted);
-
-            margin-bottom: 30px;
-
-            font-size: 14px;
-        }
-
-
-        .input-group {
-            text-align: left;
-
-            margin-bottom: 18px;
-        }
-
-
-        .input-group label {
-            display: block;
-
-            font-size: 13px;
-
-            font-weight: 700;
-
-            margin-bottom: 8px;
-
-            color: var(--text);
-        }
-
-
-        .input-group input {
-            width: 100%;
-
-            padding: 14px 15px;
-
-            border: 1px solid var(--border);
-
-            border-radius: 13px;
-
-            outline: none;
-
-            background: #fbfefc;
-
-            color: var(--text);
-
-            font-size: 15px;
-
-            transition: 0.2s;
-        }
-
-
-        .input-group input:focus {
-            border-color: var(--emerald);
-
-            box-shadow:
-                0 0 0 4px rgba(
-                    53,
-                    201,
-                    130,
-                    0.12
-                );
-        }
-
-
-        #loginButton {
-            width: 100%;
-
-            border: none;
-
-            border-radius: 14px;
-
-            padding: 15px;
-
-            margin-top: 8px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    var(--green),
-                    var(--emerald)
-                );
-
-            color: white;
-
-            font-size: 15px;
-
-            font-weight: 800;
-
-            transition: 0.2s;
-        }
-
-
-        #loginButton:hover {
-            transform: translateY(-2px);
-
-            box-shadow:
-                0 10px 25px rgba(
-                    31,
-                    143,
-                    95,
-                    0.25
-                );
-        }
-
-
-        #loginButton:disabled {
-            opacity: 0.65;
-
-            cursor: not-allowed;
-
-            transform: none;
-        }
-
-
-        #loginMessage {
-            min-height: 22px;
-
-            margin-top: 15px;
-
-            color: var(--danger);
-
-            font-size: 13px;
-
-            font-weight: 600;
-        }
-
-
-        /* =====================================================
-           DASHBOARD
-        ===================================================== */
-
-        #dashboardSection {
-            min-height: 100vh;
-        }
-
-
-        /* =====================================================
-           TOP BAR
-        ===================================================== */
-
-        .topbar {
-            position: sticky;
-
-            top: 0;
-
-            z-index: 100;
-
-            background:
-                rgba(
-                    7,
-                    28,
-                    21,
-                    0.95
-                );
-
-            backdrop-filter: blur(18px);
-
-            border-bottom:
-                1px solid rgba(
-                    255,
-                    255,
-                    255,
-                    0.08
-                );
-
-            color: white;
-        }
-
-
-        .topbar-inner {
-            width: min(
-                1400px,
-                calc(100% - 40px)
-            );
-
-            margin: auto;
-
-            min-height: 76px;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: space-between;
-
-            gap: 20px;
-        }
-
-
-        .brand {
-            display: flex;
-
-            align-items: center;
-
-            gap: 13px;
-        }
-
-
-        .brand-icon {
-            width: 45px;
-            height: 45px;
-
-            border-radius: 14px;
-
-            display: flex;
-
-            align-items: center;
-            justify-content: center;
-
-            font-size: 23px;
-
-            background:
-                rgba(
-                    53,
-                    201,
-                    130,
-                    0.16
-                );
-
-            border:
-                1px solid rgba(
-                    53,
-                    201,
-                    130,
-                    0.3
-                );
-        }
-
-
-        .brand h2 {
-            font-size: 18px;
-
-            letter-spacing: -0.3px;
-        }
-
-
-        .brand span {
-            display: block;
-
-            color: #a8c1b5;
-
-            font-size: 10px;
-
-            letter-spacing: 1.5px;
-
-            margin-top: 2px;
-        }
-
-
-        #logoutButton {
-            border:
-                1px solid rgba(
-                    255,
-                    255,
-                    255,
-                    0.15
-                );
-
-            background:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    0.06
-                );
-
-            color: white;
-
-            border-radius: 11px;
-
-            padding: 10px 16px;
-
-            font-weight: 700;
-
-            transition: 0.2s;
-        }
-
-
-        #logoutButton:hover {
-            background:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    0.12
-                );
-        }
-
-
-        /* =====================================================
-           MAIN
-        ===================================================== */
-
-        .dashboard-container {
-            width: min(
-                1400px,
-                calc(100% - 40px)
-            );
-
-            margin: auto;
-
-            padding: 38px 0 60px;
-        }
-
-
-        .dashboard-heading {
-            margin-bottom: 28px;
-        }
-
-
-        .dashboard-heading h1 {
-            font-size: clamp(
-                28px,
-                4vw,
-                42px
-            );
-
-            color: var(--deep-green);
-
-            letter-spacing: -1.2px;
-        }
-
-
-        .dashboard-heading p {
-            color: var(--muted);
-
-            margin-top: 7px;
-
-            font-size: 15px;
-        }
-
-
-        /* =====================================================
-           STAT CARDS
-        ===================================================== */
-
-        .stats-grid {
-            display: grid;
-
-            grid-template-columns:
-                repeat(
-                    3,
-                    minmax(0, 1fr)
-                );
-
-            gap: 20px;
-
-            margin-bottom: 28px;
-        }
-
-
-        .stat-card {
-            position: relative;
-
-            overflow: hidden;
-
-            background: white;
-
-            border:
-                1px solid var(--border);
-
-            border-radius: 22px;
-
-            padding: 25px;
-
-            box-shadow:
-                0 10px 35px
-                rgba(
-                    7,
-                    28,
-                    21,
-                    0.06
-                );
-        }
-
-
-        .stat-card::after {
-            content: "";
-
-            position: absolute;
-
-            width: 100px;
-            height: 100px;
-
-            right: -35px;
-            bottom: -45px;
-
-            border-radius: 50%;
-
-            background:
-                rgba(
-                    53,
-                    201,
-                    130,
-                    0.08
-                );
-        }
-
-
-        .stat-label {
-            color: var(--muted);
-
-            font-size: 13px;
-
-            font-weight: 700;
-
-            text-transform: uppercase;
-
-            letter-spacing: 0.7px;
-        }
-
-
-        .stat-value {
-            color: var(--deep-green);
-
-            font-size: 38px;
-
-            font-weight: 850;
-
-            margin-top: 8px;
-        }
-
-
-        .stat-description {
-            color: var(--muted);
-
-            font-size: 12px;
-
-            margin-top: 5px;
-        }
-
-
-        /* =====================================================
-           TOOLBAR
-        ===================================================== */
-
-        .toolbar {
-            background: white;
-
-            border:
-                1px solid var(--border);
-
-            border-radius: 20px;
-
-            padding: 17px;
-
-            margin-bottom: 18px;
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 12px;
-
-            flex-wrap: wrap;
-
-            box-shadow:
-                0 8px 30px
-                rgba(
-                    7,
-                    28,
-                    21,
-                    0.05
-                );
-        }
-
-
-        #searchInput {
-            flex: 1;
-
-            min-width: 220px;
-
-            padding: 12px 15px;
-
-            border:
-                1px solid var(--border);
-
-            border-radius: 12px;
-
-            outline: none;
-
-            font-size: 14px;
-
-            background: #fbfefc;
-        }
-
-
-        #searchInput:focus {
-            border-color:
-                var(--emerald);
-
-            box-shadow:
-                0 0 0 4px
-                rgba(
-                    53,
-                    201,
-                    130,
-                    0.1
-                );
-        }
-
-
-        .toolbar button {
-            border: none;
-
-            border-radius: 11px;
-
-            padding: 12px 16px;
-
-            font-weight: 700;
-
-            font-size: 13px;
-
-            transition: 0.2s;
-        }
-
-
-        #refreshButton {
-            background:
-                #e9f7ef;
-
-            color:
-                var(--forest);
-        }
-
-
-        #exportButton {
-            background:
-                var(--deep-green);
-
-            color: white;
-        }
-
-
-        .toolbar button:hover {
-            transform:
-                translateY(-1px);
-        }
-
-
-        .toolbar button:disabled {
-            opacity: 0.6;
-
-            cursor: not-allowed;
-        }
-
-
-        /* =====================================================
-           TABLE CARD
-        ===================================================== */
-
-        .table-card {
-            background: white;
-
-            border:
-                1px solid var(--border);
-
-            border-radius: 22px;
-
-            overflow: hidden;
-
-            box-shadow:
-                0 10px 35px
-                rgba(
-                    7,
-                    28,
-                    21,
-                    0.06
-                );
-        }
-
-
-        .table-header {
-            padding: 20px 22px;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: space-between;
-
-            border-bottom:
-                1px solid var(--border);
-        }
-
-
-        .table-header h2 {
-            color: var(--deep-green);
-
-            font-size: 18px;
-        }
-
-
-        #responseCount {
-            color: var(--muted);
-
-            font-size: 13px;
-        }
-
-
-        .table-wrapper {
-            overflow-x: auto;
-        }
-
-
-        table {
-            width: 100%;
-
-            border-collapse: collapse;
-
-            min-width: 700px;
-        }
-
-
-        thead {
-            background:
-                #f5faf7;
-        }
-
-
-        th {
-            text-align: left;
-
-            padding: 15px 20px;
-
-            font-size: 11px;
-
-            text-transform: uppercase;
-
-            letter-spacing: 0.8px;
-
-            color: var(--muted);
-
-            border-bottom:
-                1px solid var(--border);
-        }
-
-
-        td {
-            padding: 17px 20px;
-
-            border-bottom:
-                1px solid #edf3ef;
-
-            font-size: 14px;
-
-            vertical-align: middle;
-        }
-
-
-        tbody tr {
-            transition: 0.15s;
-        }
-
-
-        tbody tr:hover {
-            background:
-                #f9fcfa;
-        }
-
-
-        tbody tr:last-child td {
-            border-bottom: none;
-        }
-
-
-        .name-cell {
-            font-weight: 750;
-
-            color:
-                var(--deep-green);
-        }
-
-
-        .date-cell {
-            color: var(--muted);
-
-            font-size: 13px;
-        }
-
-
-        .answers-btn {
-            border: none;
-
-            background:
-                #e7f8ee;
-
-            color:
-                var(--forest);
-
-            padding: 9px 13px;
-
-            border-radius: 9px;
-
-            font-size: 12px;
-
-            font-weight: 800;
-
-            transition: 0.2s;
-        }
-
-
-        .answers-btn:hover {
-            background:
-                var(--emerald);
-
-            color: white;
-
-            transform:
-                translateY(-1px);
-        }
-
-
-        #emptyMessage {
-            text-align: center;
-
-            padding: 55px 20px;
-
-            color: var(--muted);
-
-            font-size: 14px;
-        }
-
-
-        /* =====================================================
-           MODAL
-        ===================================================== */
-
-        #answersModal {
-            position: fixed;
-
-            inset: 0;
-
-            z-index: 500;
-
-            background:
-                rgba(
-                    2,
-                    15,
-                    10,
-                    0.72
-                );
-
-            backdrop-filter:
-                blur(8px);
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            padding: 20px;
-        }
-
-
-        .modal-card {
-            width: min(
-                760px,
-                100%
-            );
-
-            max-height:
-                calc(100vh - 40px);
-
-            overflow: hidden;
-
-            background: white;
-
-            border-radius: 25px;
-
-            box-shadow:
-                0 30px 100px
-                rgba(
-                    0,
-                    0,
-                    0,
-                    0.25
-                );
-
-            display: flex;
-
-            flex-direction: column;
-        }
-
-
-        .modal-header {
-            padding: 22px 25px;
-
-            background:
-                var(--deep-green);
-
-            color: white;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: space-between;
-
-            gap: 20px;
-        }
-
-
-        .modal-header h2 {
-            font-size: 20px;
-        }
-
-
-        .modal-header p {
-            margin-top: 3px;
-
-            color: #b5cfc3;
-
-            font-size: 12px;
-        }
-
-
-        #closeModal {
-            width: 38px;
-            height: 38px;
-
-            flex-shrink: 0;
-
-            border: none;
-
-            border-radius: 10px;
-
-            background:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    0.1
-                );
-
-            color: white;
-
-            font-size: 22px;
-
-            line-height: 1;
-
-            transition: 0.2s;
-        }
-
-
-        #closeModal:hover {
-            background:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    0.2
-                );
-        }
-
-
-        #answersContainer {
-            padding: 22px 25px;
-
-            overflow-y: auto;
-        }
-
-
-        .answer {
-            padding: 17px;
-
-            margin-bottom: 12px;
-
-            border:
-                1px solid var(--border);
-
-            border-radius: 14px;
-
-            background:
-                #f9fcfa;
-        }
-
-
-        .answer:last-child {
-            margin-bottom: 0;
-        }
-
-
-        .answer strong {
-            display: block;
-
-            color:
-                var(--deep-green);
-
-            font-size: 13px;
-
-            line-height: 1.5;
-
-            margin-bottom: 7px;
-        }
-
-
-        .answer span {
-            display: block;
-
-            color:
-                var(--muted);
-
-            font-size: 14px;
-
-            line-height: 1.6;
-        }
-
-
-        /* =====================================================
-           RESPONSIVE
-        ===================================================== */
-
-        @media (max-width: 850px) {
-
-            .stats-grid {
-                grid-template-columns:
-                    1fr;
-            }
-
-        }
-
-
-        @media (max-width: 600px) {
-
-            .topbar-inner {
-                width:
-                    calc(100% - 25px);
-
-                min-height: 68px;
-            }
-
-
-            .brand h2 {
-                font-size: 16px;
-            }
-
-
-            .brand span {
-                font-size: 8px;
-            }
-
-
-            .brand-icon {
-                width: 40px;
-                height: 40px;
-
-                font-size: 20px;
-            }
-
-
-            .dashboard-container {
-                width:
-                    calc(100% - 25px);
-
-                padding-top: 28px;
-            }
-
-
-            .dashboard-heading h1 {
-                font-size: 30px;
-            }
-
-
-            .toolbar {
-                align-items: stretch;
-            }
-
-
-            #searchInput {
-                min-width: 100%;
-                width: 100%;
-            }
-
-
-            .toolbar button {
-                flex: 1;
-            }
-
-
-            .login-card {
-                padding: 34px 24px;
-            }
-
-
-            .modal-card {
-                border-radius: 20px;
-            }
-
-
-            .modal-header {
-                padding: 18px;
-            }
-
-
-            #answersContainer {
-                padding: 18px;
-            }
-
-        }
-
-    </style>
 </head>
 
 
 <body>
 
+    <!-- BACKGROUND EFFECTS -->
 
-    <!-- =====================================================
-         LOGIN SECTION
-    ====================================================== -->
+    <div class="background-grid"></div>
 
-    <section id="loginSection">
+    <div class="glow glow-one"></div>
 
-        <div class="login-wrapper">
+    <div class="glow glow-two"></div>
 
-            <div class="login-card">
+    <div class="glow glow-three"></div>
 
-                <div class="login-logo">
-                    ♻
+
+    <!-- HEADER -->
+
+    <header class="header">
+
+        <div class="header-content">
+
+            <div class="brand">
+
+                <div class="brand-icon">
+                    &#9851;
                 </div>
 
-                <h1>
-                    EcoPulse
-                </h1>
+                <div>
 
-                <p class="subtitle">
-                    Secure administrator dashboard
-                </p>
+                    <h1>EcoPulse</h1>
 
-
-                <form id="loginForm">
-
-                    <div class="input-group">
-
-                        <label for="email">
-                            Admin Email
-                        </label>
-
-                        <input
-                            type="email"
-                            id="email"
-                            placeholder="Enter admin email"
-                            autocomplete="email"
-                            required
-                        >
-
-                    </div>
-
-
-                    <div class="input-group">
-
-                        <label for="password">
-                            Password
-                        </label>
-
-                        <input
-                            type="password"
-                            id="password"
-                            placeholder="Enter password"
-                            autocomplete="current-password"
-                            required
-                        >
-
-                    </div>
-
-
-                    <button
-                        type="submit"
-                        id="loginButton"
-                    >
-                        Login
-                    </button>
-
-
-                    <p id="loginMessage"></p>
-
-                </form>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-
-    <!-- =====================================================
-         DASHBOARD SECTION
-    ====================================================== -->
-
-    <section
-        id="dashboardSection"
-        class="hidden"
-    >
-
-
-        <!-- TOP BAR -->
-
-        <header class="topbar">
-
-            <div class="topbar-inner">
-
-                <div class="brand">
-
-                    <div class="brand-icon">
-                        ♻
-                    </div>
-
-                    <div>
-
-                        <h2>
-                            EcoPulse Admin
-                        </h2>
-
-                        <span>
-                            CAMPUS ENVIRONMENT SYSTEM
-                        </span>
-
-                    </div>
-
-                </div>
-
-
-                <button id="logoutButton">
-                    Logout
-                </button>
-
-            </div>
-
-        </header>
-
-
-
-        <!-- DASHBOARD -->
-
-        <main class="dashboard-container">
-
-
-            <!-- HEADING -->
-
-            <div class="dashboard-heading">
-
-                <h1>
-                    Survey Dashboard
-                </h1>
-
-                <p>
-                    Monitor and analyse campus waste-management responses.
-                </p>
-
-            </div>
-
-
-
-            <!-- STATISTICS -->
-
-            <div class="stats-grid">
-
-
-                <!-- TOTAL -->
-
-                <div class="stat-card">
-
-                    <div class="stat-label">
-                        Total Responses
-                    </div>
-
-                    <div
-                        class="stat-value"
-                        id="totalResponses"
-                    >
-                        0
-                    </div>
-
-                    <div class="stat-description">
-                        Submitted survey responses
-                    </div>
-
-                </div>
-
-
-                <!-- BINS -->
-
-                <div class="stat-card">
-
-                    <div class="stat-label">
-                        Enough Dustbins
-                    </div>
-
-                    <div
-                        class="stat-value"
-                        id="enoughBinsPercentage"
-                    >
-                        0%
-                    </div>
-
-                    <div class="stat-description">
-                        Respondents who answered "Yes"
-                    </div>
-
-                </div>
-
-
-                <!-- CLEANLINESS -->
-
-                <div class="stat-card">
-
-                    <div class="stat-label">
-                        Cleanliness Satisfaction
-                    </div>
-
-                    <div
-                        class="stat-value"
-                        id="cleanlinessPercentage"
-                    >
-                        0%
-                    </div>
-
-                    <div class="stat-description">
-                        Satisfied or very satisfied
-                    </div>
-
-                </div>
-
-            </div>
-
-
-
-            <!-- TOOLBAR -->
-
-            <div class="toolbar">
-
-                <input
-                    type="search"
-                    id="searchInput"
-                    placeholder="Search respondents by name..."
-                    autocomplete="off"
-                >
-
-
-                <button
-                    id="refreshButton"
-                    type="button"
-                >
-                    ↻ Refresh
-                </button>
-
-
-                <button
-                    id="exportButton"
-                    type="button"
-                >
-                    ↓ Export CSV
-                </button>
-
-            </div>
-
-
-
-            <!-- RESPONSES -->
-
-            <div class="table-card">
-
-
-                <div class="table-header">
-
-                    <h2>
-                        Survey Responses
-                    </h2>
-
-                    <span id="responseCount">
-                        0 responses
+                    <span>
+                        CAMPUS ENVIRONMENT SYSTEM
                     </span>
 
                 </div>
 
-
-                <div class="table-wrapper">
-
-                    <table>
-
-                        <thead>
-
-                            <tr>
-
-                                <th>
-                                    #
-                                </th>
-
-                                <th>
-                                    Full Name
-                                </th>
-
-                                <th>
-                                    Date
-                                </th>
-
-                                <th>
-                                    Answers
-                                </th>
-
-                            </tr>
-
-                        </thead>
-
-
-                        <tbody
-                            id="responsesTableBody"
-                        >
-                        </tbody>
-
-                    </table>
-
-                </div>
-
-
-                <div
-                    id="emptyMessage"
-                    class="hidden"
-                >
-                    No survey responses found.
-                </div>
-
             </div>
 
 
-        </main>
-
-    </section>
-
-
-
-    <!-- =====================================================
-         ANSWERS MODAL
-    ====================================================== -->
-
-    <div
-        id="answersModal"
-        class="hidden"
-    >
-
-        <div class="modal-card">
-
-
-            <div class="modal-header">
-
-                <div>
-
-                    <h2 id="modalName">
-                        Respondent
-                    </h2>
-
-                    <p id="modalDate">
-                        Submitted:
-                    </p>
-
-                </div>
-
-
-                <button
-                    id="closeModal"
-                    type="button"
-                    aria-label="Close"
-                >
-                    ×
-                </button>
-
-            </div>
-
-
-            <div id="answersContainer">
-            </div>
-
+            <a
+                href="admin.html"
+                class="admin-link"
+            >
+                Admin
+            </a>
 
         </div>
 
-    </div>
+    </header>
 
 
+    <!-- MAIN -->
 
-    <!-- =====================================================
-         SUPABASE
-    ====================================================== -->
-
-    <script
-        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
-    ></script>
+    <main class="main-container">
 
 
-    <!-- =====================================================
-         CONFIG
-    ====================================================== -->
+        <!-- HERO -->
 
-    <script src="config.js"></script>
+        <section class="hero">
+
+            <div class="status-badge">
+
+                <span class="status-dot"></span>
+
+                LIVE ENVIRONMENTAL SURVEY
+
+            </div>
 
 
-    <!-- =====================================================
-         ADMIN JAVASCRIPT
-    ====================================================== -->
+            <h2>
 
-    <script src="admin.js"></script>
+                Help us build a
+                <span>cleaner campus.</span>
 
+            </h2>
+
+
+            <p>
+
+                Five short questions on waste, recycling
+                and cleanliness across campus.
+
+            </p>
+
+
+            <div class="progress-intro">
+
+                <span>
+                    5 QUESTIONS
+                </span>
+
+                <span>
+                    ~90 SECONDS
+                </span>
+
+            </div>
+
+        </section>
+
+
+        <!-- SURVEY -->
+
+        <form id="surveyForm">
+
+
+            <!-- PERSONAL INFORMATION -->
+
+            <section class="survey-card">
+
+                <div class="section-heading">
+
+                    <span class="section-number">
+                        01
+                    </span>
+
+                    <div>
+
+                        <h3>
+                            About you
+                        </h3>
+
+                        <p>
+                            Let's start with your name.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="question">
+
+                    <label for="fullName">
+
+                        Full Name
+
+                        <span class="required">*</span>
+
+                    </label>
+
+
+                    <input
+                        type="text"
+                        id="fullName"
+                        name="fullName"
+                        placeholder="Enter your full name"
+                        required
+                        minlength="2"
+                    >
+
+                </div>
+
+            </section>
+
+
+            <!-- QUESTIONS -->
+
+            <section class="survey-card">
+
+                <div class="section-heading">
+
+                    <span class="section-number">
+                        02
+                    </span>
+
+                    <div>
+
+                        <h3>
+                            Campus Waste
+                        </h3>
+
+                        <p>
+                            Tell us what you see around campus.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Q1 -->
+
+                <div class="question">
+
+                    <label>
+
+                        1. How would you rate the current
+                        waste management on campus?
+
+                        <span class="required">*</span>
+
+                    </label>
+
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input type="radio" name="q1"
+                                   value="Very poor" required>
+                            <span>Very poor</span>
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q1"
+                                   value="Poor">
+                            <span>Poor</span>
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q1"
+                                   value="Average">
+                            <span>Average</span>
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q1"
+                                   value="Good">
+                            <span>Good</span>
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q1"
+                                   value="Very good">
+                            <span>Very good</span>
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Q2  (original Q4) -->
+
+                <div class="question">
+
+                    <label>
+
+                        2. How often do you see litter
+                        around campus?
+
+                        <span class="required">*</span>
+
+                    </label>
+
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input type="radio" name="q4"
+                                   value="Never" required>
+                            <span>Never</span>
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q4"
+                                   value="Rarely">
+                            <span>Rarely</span>
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q4"
+                                   value="Sometimes">
+                            <span>Sometimes</span>
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q4"
+                                   value="Often">
+                            <span>Often</span>
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q4"
+                                   value="Very often">
+                            <span>Very often</span>
+                        </label>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- RECYCLING + BEHAVIOUR -->
+
+            <section class="survey-card">
+
+                <div class="section-heading">
+
+                    <span class="section-number">
+                        03
+                    </span>
+
+                    <div>
+
+                        <h3>
+                            Recycling &amp; Behaviour
+                        </h3>
+
+                        <p>
+                            What's holding the campus back?
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Q3  (original Q12) -->
+
+                <div class="question">
+
+                    <label>
+
+                        3. What prevents people from
+                        recycling on campus?
+
+                        <span class="required">*</span>
+
+                    </label>
+
+
+                    <p class="hint">
+                        Select all that apply.
+                    </p>
+
+
+                    <div class="options checkbox-options">
+
+                        <label class="option">
+                            <input type="checkbox" name="q12"
+                                   value="Not enough recycling bins">
+                            <span>Not enough recycling bins</span>
+                        </label>
+
+                        <label class="option">
+                            <input type="checkbox" name="q12"
+                                   value="Recycling bins are difficult to find">
+                            <span>Recycling bins are difficult to find</span>
+                        </label>
+
+                        <label class="option">
+                            <input type="checkbox" name="q12"
+                                   value="Lack of knowledge about recycling">
+                            <span>Lack of knowledge about recycling</span>
+                        </label>
+
+                        <label class="option">
+                            <input type="checkbox" name="q12"
+                                   value="Lack of interest">
+                            <span>Lack of interest</span>
+                        </label>
+
+                        <label class="option">
+                            <input type="checkbox" name="q12"
+                                   value="Recycling bins are not clearly labelled">
+                            <span>Recycling bins are not clearly labelled</span>
+                        </label>
+
+                        <label class="option">
+                            <input type="checkbox" name="q12"
+                                   value="People are not encouraged to recycle">
+                            <span>People are not encouraged to recycle</span>
+                        </label>
+
+                        <label class="option">
+                            <input type="checkbox" name="q12"
+                                   value="Nothing prevents recycling">
+                            <span>Nothing prevents recycling</span>
+                        </label>
+
+                    </div>
+
+
+                    <input
+                        type="text"
+                        id="q12_other"
+                        name="q12_other"
+                        class="other-input"
+                        placeholder="Other reason..."
+                    >
+
+                </div>
+
+
+                <!-- Q4  (original Q16) -->
+
+                <div class="question">
+
+                    <label>
+
+                        4. What are the main causes of
+                        littering on campus?
+
+                        <span class="required">*</span>
+
+                    </label>
+
+
+                    <p class="hint">
+                        Select all that apply.
+                    </p>
+
+
+                    <div class="options checkbox-options">
+
+                        <label class="option">
+                            <input type="checkbox" name="q16"
+                                   value="Lack of enough dustbins">
+                            <span>Lack of enough dustbins</span>
+                        </label>
+
+                        <label class="option">
+                            <input type="checkbox" name="q16"
+                                   value="Dustbins are not conveniently located">
+                            <span>Dustbins are not conveniently located</span>
+                        </label>
+
+                        <label class="option">
+                            <input type="checkbox" name="q16"
+                                   value="People do not dispose of waste properly">
+                            <span>People do not dispose of waste properly</span>
+                        </label>
+
+                        <label class="option">
+                            <input type="checkbox" name="q16"
+                                   value="Lack of awareness">
+                            <span>Lack of awareness</span>
+                        </label>
+
+                        <label class="option">
+                            <input type="checkbox" name="q16"
+                                   value="Dustbins are often full">
+                            <span>Dustbins are often full</span>
+                        </label>
+
+                        <label class="option">
+                            <input type="checkbox" name="q16"
+                                   value="Lack of regular cleaning">
+                            <span>Lack of regular cleaning</span>
+                        </label>
+
+                    </div>
+
+
+                    <input
+                        type="text"
+                        id="q16_other"
+                        name="q16_other"
+                        class="other-input"
+                        placeholder="Other cause..."
+                    >
+
+                </div>
+
+
+                <!-- Q5  (original Q18) -->
+
+                <div class="question">
+
+                    <label>
+
+                        5. Should the university provide more
+                        education about waste management?
+
+                        <span class="required">*</span>
+
+                    </label>
+
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input type="radio" name="q18"
+                                   value="Strongly agree" required>
+                            <span>Strongly agree</span>
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q18"
+                                   value="Agree">
+                            <span>Agree</span>
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q18"
+                                   value="Neutral">
+                            <span>Neutral</span>
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q18"
+                                   value="Disagree">
+                            <span>Disagree</span>
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q18"
+                                   value="Strongly disagree">
+                            <span>Strongly disagree</span>
+                        </label>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- SUBMIT -->
+
+            <section class="submit-card">
+
+                <div class="submit-icon">
+                    &#9851;
+                </div>
+
+                <h3>
+                    Your voice matters.
+                </h3>
+
+                <p>
+                    Every response helps us understand
+                    how to improve waste management on campus.
+                </p>
+
+
+                <button
+                    type="submit"
+                    id="submitButton"
+                >
+                    <span>
+                        Submit Survey
+                    </span>
+
+                    <strong>
+                        &rarr;
+                    </strong>
+
+                </button>
+
+
+                <p id="statusMessage"></p>
+
+            </section>
+
+
+        </form>
+
+
+        <!-- SUCCESS -->
+
+        <section
+            id="successMessage"
+            class="success-card hidden"
+        >
+
+            <div class="success-icon">
+                &#10003;
+            </div>
+
+            <div class="status-badge">
+                RESPONSE RECORDED
+            </div>
+
+            <h2>
+                Thank you for helping
+                <span>the planet.</span>
+            </h2>
+
+            <p>
+                Your response has been securely recorded.
+            </p>
+
+            <button
+                onclick="location.reload()"
+            >
+                Submit Another Response
+            </button>
+
+        </section>
+
+
+    </main>
+
+
+    <footer>
+
+        <p>
+            EcoPulse &bull; Campus Waste Management Survey
+        </p>
+
+        <span>
+            Building a cleaner tomorrow
+        </span>
+
+    </footer>
 
 </body>
+
 </html>
