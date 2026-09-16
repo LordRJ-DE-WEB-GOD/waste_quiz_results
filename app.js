@@ -79,41 +79,34 @@ surveyForm.addEventListener("submit", async (event) => {
     // --------------------------------------------------------
 
     const q1 = getRadioValue("q1");
-    const q2 = getRadioValue("q2");
-    const q3 = getRadioValue("q3");
     const q4 = getRadioValue("q4");
 
-    const q6 = getRadioValue("q6");
-
-    const q7 = getRadioValue("q7");
-
-    const q8 = getRadioValue("q8");
-
-    const q9 = getRadioValue("q9");
-
-    const q10 = getRadioValue("q10");
+    const q18 = getRadioValue("q18");
 
 
     // --------------------------------------------------------
-    // CHECKBOX QUESTION
+    // CHECKBOX QUESTIONS
     // --------------------------------------------------------
 
-    const q5 =
-        getCheckboxValues("q5");
+    const q12 =
+        getCheckboxValues("q12");
+
+    const q16 =
+        getCheckboxValues("q16");
 
 
     // --------------------------------------------------------
     // OTHER
     // --------------------------------------------------------
 
-    const q5Other =
-        document.getElementById("q5_other")
+    const q12Other =
+        document.getElementById("q12_other")
             .value
             .trim();
 
 
-    const q6Other =
-        document.getElementById("q6_other")
+    const q16Other =
+        document.getElementById("q16_other")
             .value
             .trim();
 
@@ -125,14 +118,8 @@ surveyForm.addEventListener("submit", async (event) => {
     const requiredAnswers = [
 
         q1,
-        q2,
-        q3,
         q4,
-        q6,
-        q7,
-        q8,
-        q9,
-        q10
+        q18
 
     ];
 
@@ -154,10 +141,29 @@ surveyForm.addEventListener("submit", async (event) => {
     }
 
 
-    if (q5.length === 0) {
+    if (
+        q12.length === 0 &&
+        !q12Other
+    ) {
 
         showError(
-            "Please select at least one type of waste."
+            "Please select at least one option for question 3, or specify your own."
+        );
+
+        submitButton.disabled = false;
+
+        return;
+
+    }
+
+
+    if (
+        q16.length === 0 &&
+        !q16Other
+    ) {
+
+        showError(
+            "Please select at least one option for question 4, or specify your own."
         );
 
         submitButton.disabled = false;
@@ -177,29 +183,19 @@ surveyForm.addEventListener("submit", async (event) => {
 
         q1: q1,
 
-        q2: q2,
-
-        q3: q3,
-
         q4: q4,
 
-        q5: q5,
+        q12: q12,
 
-        q5_other:
-            q5Other || null,
+        q12_other:
+            q12Other || null,
 
-        q6: q6,
+        q16: q16,
 
-        q6_other:
-            q6Other || null,
+        q16_other:
+            q16Other || null,
 
-        q7: q7,
-
-        q8: q8,
-
-        q9: q9,
-
-        q10: q10
+        q18: q18
 
     };
 
@@ -211,7 +207,7 @@ surveyForm.addEventListener("submit", async (event) => {
     const {
         error
     } = await supabaseClient
-        .from("waste_management_responses")
+        .from(TABLE_NAME)
         .insert([responseData]);
 
 
@@ -311,17 +307,17 @@ function showError(message) {
 // OTHER INPUT HANDLING
 // ------------------------------------------------------------
 
-const q5OtherInput =
-    document.getElementById("q5_other");
+const q12OtherInput =
+    document.getElementById("q12_other");
 
 
-const q6OtherInput =
-    document.getElementById("q6_other");
+const q16OtherInput =
+    document.getElementById("q16_other");
 
 
 // Highlight Other inputs when used
 
-[q5OtherInput, q6OtherInput]
+[q12OtherInput, q16OtherInput]
     .forEach(input => {
 
         input.addEventListener(
